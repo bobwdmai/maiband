@@ -850,6 +850,7 @@ public:
     }
 
     std::function<void(bandforge::TrackId)> onSelectTrack;
+    std::function<float(bandforge::TrackId)> getTrackLevel; // 0..1, for VU meter
 
     int getNumRows() override
     {
@@ -883,6 +884,20 @@ public:
         graphics.setFont(juce::FontOptions(11.0f));
         juce::String detail = juce::String::fromUTF8(bandforge::toString(track.kind).c_str());
         graphics.drawText(detail, row.withTrimmedLeft(14).translated(0, 20).withHeight(18), juce::Justification::centredLeft);
+
+        // VU meter bar
+        const float level = getTrackLevel ? getTrackLevel(track.id) : 0.0f;
+        if (level > 0.0f) {
+            const auto meterArea = row.withTrimmedLeft(14).translated(0, 40).withHeight(5);
+            const int meterW = static_cast<int>(level * static_cast<float>(meterArea.getWidth()));
+            const juce::Colour meterColour = level > 0.85f ? juce::Colour(0xffff5555)
+                                           : level > 0.6f  ? juce::Colour(0xffddcc44)
+                                                            : accent.withAlpha(0.8f);
+            graphics.setColour(juce::Colour(0xff1a2030));
+            graphics.fillRoundedRectangle(meterArea.toFloat(), 2.0f);
+            graphics.setColour(meterColour);
+            graphics.fillRoundedRectangle(meterArea.withWidth(meterW).toFloat(), 2.0f);
+        }
     }
 
     juce::Component* refreshComponentForRow(int rowNumber, bool, juce::Component* existingComponentToUpdate) override
@@ -1035,6 +1050,8 @@ public:
     std::function<void(bandforge::TrackId)> onSelectTrack;
     std::function<void(bandforge::TrackId, bandforge::ClipId)> onSelectClip;
 
+    void setAudioEngine(bandforge::AudioEngine* engine) { audioEngine_ = engine; }
+
     // ── FileDragAndDropTarget ─────────────────────────────────────────────────
     bool isInterestedInFileDrag(const juce::StringArray& files) override
     {
@@ -1169,13 +1186,71 @@ public:
                 }
             }
 
+            // Automation lane overlay at bottom of track row
+            if (!track.automation.empty()) {
+                const int laneH = 10;
+                const int laneY = y + rowHeight - laneH - 3;
+                const double totalBeats = std::max(1.0, project_.durationBeats() + 4.0);
+                static const juce::Colour kAutoColours[] = {
+                    juce::Colour(0xff44bbff), juce::Colour(0xffff9944), juce::Colour(0xff88dd55)
+                };
+                for (std::size_t li = 0; li < track.automation.size() && li < 3; ++li) {
+                    const auto& lane = track.automation[li];
+                    if (lane.points.empty()) continue;
+                    graphics.setColour(kAutoColours[li % 3].withAlpha(0.6f));
+                    int prevX = 0;
+                    float prevY = 0.0f;
+                    for (int px = 0; px < getWidth(); px += 3) {
+                        const double beat = grid_.pixelToBeat(static_cast<double>(px));
+                        const float valNorm = static_cast<float>((lane.valueAt(beat, 0.0) + 1.0) * 0.5);
+                        const int lineY = laneY + laneH - static_cast<int>(valNorm * laneH);
+                        if (px > 0) {
+                            graphics.drawLine(static_cast<float>(prevX), prevY,
+                                static_cast<float>(px), static_cast<float>(lineY), 1.5f);
+                        }
+                        prevX = px; prevY = static_cast<float>(lineY);
+                    }
+                }
+            }
+
             y += rowHeight;
+        }
+
+        // Cue markers on ruler
+        for (const auto& marker : project_.markers) {
+            const int mx = static_cast<int>(grid_.beatToPixel(marker.beat));
+            const auto mColour = colourFromHex(marker.color, juce::Colour(0xffffd740));
+            graphics.setColour(mColour.withAlpha(0.85f));
+            graphics.drawVerticalLine(mx, 0.0f, static_cast<float>(rulerHeight));
+            // Diamond head
+            const float cx = static_cast<float>(mx);
+            const float cy = 10.0f;
+            juce::Path diamond;
+            diamond.addTriangle(cx, cy - 6.0f, cx - 5.0f, cy + 2.0f, cx + 5.0f, cy + 2.0f);
+            graphics.fillPath(diamond);
+            // Label
+            graphics.setFont(juce::FontOptions(9.0f, juce::Font::bold));
+            graphics.setColour(mColour);
+            graphics.drawText(juce::String::fromUTF8(marker.name.c_str()), mx + 4, 4, 80, 14, juce::Justification::centredLeft, true);
         }
 
         const int playheadX = static_cast<int>(grid_.beatToPixel(transport_.positionBeat()));
         graphics.setColour(juce::Colour(0xffff5858));
         graphics.drawVerticalLine(playheadX, 0.0f, static_cast<float>(getHeight()));
         graphics.fillEllipse(static_cast<float>(playheadX - 5), 20.0f, 10.0f, 10.0f);
+    }
+
+    void mouseDoubleClick(const juce::MouseEvent& event) override
+    {
+        if (event.y > 34) return; // only in ruler
+        const double beat = grid_.snap(std::max(0.0, grid_.pixelToBeat(static_cast<double>(event.x))));
+        history_.remember(project_);
+        bandforge::Marker m;
+        m.beat = beat;
+        m.name = "Marker " + std::to_string(project_.markers.size() + 1);
+        project_.markers.push_back(m);
+        std::sort(project_.markers.begin(), project_.markers.end(), [](const auto& a, const auto& b) { return a.beat < b.beat; });
+        repaint();
     }
 
     void mouseDown(const juce::MouseEvent& event) override
@@ -1313,18 +1388,45 @@ private:
         return {};
     }
 
-    static void drawAudioPreview(juce::Graphics& graphics, const bandforge::Clip& clip, juce::Rectangle<int> area, juce::Colour accent)
+    void drawAudioPreview(juce::Graphics& graphics, const bandforge::Clip& clip, juce::Rectangle<int> area, juce::Colour accent) const
     {
         graphics.setColour(accent.withAlpha(0.35f));
         graphics.drawHorizontalLine(area.getCentreY(), static_cast<float>(area.getX()), static_cast<float>(area.getRight()));
 
-        auto seed = static_cast<std::uint32_t>(std::hash<std::string> {}(clip.audio.mediaPath.empty() ? clip.name : clip.audio.mediaPath));
+        const int barStep = 3;
+        const int numBars = std::max(1, area.getWidth() / barStep);
+
+        // Try to draw from real cached audio data
+        const bandforge::AudioEngine::CachedAudioClip* audio = audioEngine_
+            ? audioEngine_->peekAudioForPath(clip.audio.mediaPath) : nullptr;
+
         graphics.setColour(accent.withAlpha(0.6f));
-        for (int x = area.getX(); x < area.getRight(); x += 3) {
-            seed = (seed * 1664525u) + 1013904223u;
-            const auto amount = 0.22f + static_cast<float>((seed >> 16) & 0xffu) / 255.0f * 0.78f;
-            const int height = std::max(2, static_cast<int>(amount * static_cast<float>(area.getHeight())));
-            graphics.drawVerticalLine(x, static_cast<float>(area.getCentreY() - height / 2), static_cast<float>(area.getCentreY() + height / 2));
+
+        if (audio && audio->sampleRate > 0 && audio->channels > 0 && !audio->samples.empty()) {
+            const auto totalFrames = static_cast<int64_t>(audio->samples.size() / static_cast<std::size_t>(audio->channels));
+            const auto ch = static_cast<std::size_t>(std::min(1, audio->channels - 1)); // use right channel for stereo, mono otherwise
+            for (int b = 0; b < numBars; ++b) {
+                const double tNorm = static_cast<double>(b) / numBars;
+                const auto f0 = static_cast<int64_t>(tNorm * static_cast<double>(totalFrames));
+                const auto f1 = std::min(totalFrames, f0 + std::max(int64_t{1}, totalFrames / numBars));
+                float peak = 0.0f;
+                for (int64_t f = f0; f < f1; ++f) {
+                    peak = std::max(peak, std::abs(audio->samples[static_cast<std::size_t>(f) * static_cast<std::size_t>(audio->channels) + ch]));
+                }
+                const int height = std::max(2, static_cast<int>(peak * static_cast<float>(area.getHeight())));
+                const int x = area.getX() + b * barStep;
+                graphics.drawVerticalLine(x, static_cast<float>(area.getCentreY() - height / 2), static_cast<float>(area.getCentreY() + height / 2));
+            }
+        } else {
+            // Fallback: deterministic pseudo-random bars until audio is cached
+            auto seed = static_cast<std::uint32_t>(std::hash<std::string>{}(clip.audio.mediaPath.empty() ? clip.name : clip.audio.mediaPath));
+            for (int b = 0; b < numBars; ++b) {
+                seed = (seed * 1664525u) + 1013904223u;
+                const auto amount = 0.22f + static_cast<float>((seed >> 16) & 0xffu) / 255.0f * 0.78f;
+                const int height = std::max(2, static_cast<int>(amount * static_cast<float>(area.getHeight())));
+                const int x = area.getX() + b * barStep;
+                graphics.drawVerticalLine(x, static_cast<float>(area.getCentreY() - height / 2), static_cast<float>(area.getCentreY() + height / 2));
+            }
         }
     }
 
@@ -1370,6 +1472,20 @@ private:
         juce::FileInputStream stream(file);
         if (!stream.openedOk() || !midiFile.readFrom(stream)) return;
 
+        // Read tempo from meta events before converting timestamps
+        double bpm = 120.0;
+        for (int ti = 0; ti < midiFile.getNumTracks(); ++ti) {
+            const auto* seq = midiFile.getTrack(ti);
+            if (!seq) continue;
+            for (int ei = 0; ei < seq->getNumEvents(); ++ei) {
+                const auto& msg = seq->getEventPointer(ei)->message;
+                if (msg.isTempoMetaEvent()) {
+                    bpm = 60'000'000.0 / static_cast<double>(msg.getTempoSecondsPerQuarterNote() * 1'000'000.0);
+                    break;
+                }
+            }
+        }
+
         midiFile.convertTimestampTicksToSeconds();
         const int numTracks = midiFile.getNumTracks();
 
@@ -1380,8 +1496,7 @@ private:
             bandforge::MidiClipData data;
             double lastNoteSec = 0.0;
 
-            // Collect note-ons, match with note-offs
-            std::map<int, std::pair<double, int>> activeNotes; // pitch → {startSec, velocity}
+            std::map<int, std::pair<double, int>> activeNotes;
             for (int ei = 0; ei < seq->getNumEvents(); ++ei) {
                 const auto& evt = seq->getEventPointer(ei)->message;
                 const double t = evt.getTimeStamp();
@@ -1390,7 +1505,6 @@ private:
                 } else if (evt.isNoteOff()) {
                     auto it = activeNotes.find(evt.getNoteNumber());
                     if (it != activeNotes.end()) {
-                        const double bpm = 120.0;
                         const double startBeat = it->second.first * (bpm / 60.0);
                         const double durBeats  = (t - it->second.first) * (bpm / 60.0);
                         bandforge::MidiNote note;
@@ -1407,7 +1521,6 @@ private:
             }
             if (data.notes.empty()) continue;
 
-            const double bpm = 120.0;
             const double clipBeats = std::max(4.0, lastNoteSec * (bpm / 60.0));
 
             bandforge::Track* track = project_.findTrack(targetTrackId);
@@ -1432,6 +1545,7 @@ private:
     bandforge::ProjectHistory& history_;
     bandforge_app::SelectionState& selection_;
     bandforge::TimelineEditor editor_;
+    bandforge::AudioEngine* audioEngine_ = nullptr;
     DragState drag_;
     bool dropHighlight_ = false;
 };
@@ -2224,6 +2338,7 @@ private:
         static constexpr int kPitchRange = kPitchMax - kPitchMin;
         static constexpr double kGridBeats = 16.0;
         static constexpr double kDefaultNoteDuration = 0.25;
+        static constexpr int kVelocityLaneH = 56;
 
         PianoRollView(bandforge::Project& project, bandforge::ProjectHistory& history, bandforge_app::SelectionState& selection)
             : project_(project)
@@ -2231,6 +2346,20 @@ private:
             , selection_(selection)
         {
             setMouseCursor(juce::MouseCursor::CrosshairCursor);
+            setWantsKeyboardFocus(true);
+
+            quantizeButton_.setButtonText("Q");
+            quantizeButton_.setTooltip("Quantize notes");
+            quantizeButton_.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2e3b4e));
+            quantizeButton_.setColour(juce::TextButton::textColourOffId, juce::Colour(0xff8ab4d8));
+            quantizeButton_.onClick = [this] { showQuantizeMenu(); };
+            addAndMakeVisible(quantizeButton_);
+        }
+
+        void resized() override
+        {
+            auto area = getLocalBounds().reduced(14).reduced(12);
+            quantizeButton_.setBounds(area.getRight() - 62, area.getY() + 4, 28, 22);
         }
 
         void paint(juce::Graphics& graphics) override
@@ -2243,11 +2372,20 @@ private:
             graphics.setFont(juce::FontOptions(14.0f, juce::Font::bold));
             graphics.drawText("Piano Roll", area.reduced(12).withHeight(24), juce::Justification::centredLeft);
 
-            auto grid = gridArea();
+            // Hint for transpose shortcuts
+            graphics.setColour(juce::Colour(0xff5a7090));
+            graphics.setFont(juce::FontOptions(10.0f));
+            graphics.drawText(juce::CharPointer_UTF8("\xe2\x87\xa7\xe2\x86\x91\xe2\x86\x93 transpose"), area.reduced(12).withHeight(24).withX(area.getX() + 100), juce::Justification::centredLeft);
+
+            const auto* clip = selectedMidiClip();
+            const double clipBeats = clip ? std::max(1.0, clip->lengthBeats) : kGridBeats;
+
+            auto grid = noteGridArea();
+            auto velArea = velocityArea();
 
             // Row backgrounds (black/white key alternation for chromatic)
             static constexpr bool kBlackKey[12] = { false, true, false, true, false, false, true, false, true, false, true, false };
-            const int rowH = grid.getHeight() / kPitchRange;
+            const int rowH = std::max(1, grid.getHeight() / kPitchRange);
             for (int i = 0; i < kPitchRange; ++i) {
                 const int semitone = (kPitchMax - 1 - i) % 12;
                 graphics.setColour(kBlackKey[semitone] ? juce::Colour(0xff1e2530) : juce::Colour(0xff28313d));
@@ -2255,14 +2393,22 @@ private:
             }
 
             // Beat grid lines
-            const auto* clip = selectedMidiClip();
-            const double clipBeats = clip ? std::max(1.0, clip->lengthBeats) : kGridBeats;
             const int gridBeats = static_cast<int>(std::ceil(clipBeats));
             for (int beat = 0; beat <= gridBeats; ++beat) {
                 const int x = grid.getX() + static_cast<int>((static_cast<double>(beat) / clipBeats) * grid.getWidth());
                 graphics.setColour(beat % 4 == 0 ? juce::Colour(0xff4a5666) : juce::Colour(0xff343d4a));
                 graphics.drawVerticalLine(x, static_cast<float>(grid.getY()), static_cast<float>(grid.getBottom()));
+                graphics.drawVerticalLine(x, static_cast<float>(velArea.getY()), static_cast<float>(velArea.getBottom()));
             }
+
+            // Velocity lane background
+            graphics.setColour(juce::Colour(0xff1a2028));
+            graphics.fillRect(velArea);
+            graphics.setColour(juce::Colour(0xff2e3b4e));
+            graphics.drawHorizontalLine(velArea.getY(), static_cast<float>(velArea.getX()), static_cast<float>(velArea.getRight()));
+            graphics.setColour(juce::Colour(0xff5a7090));
+            graphics.setFont(juce::FontOptions(10.0f));
+            graphics.drawText("Velocity", velArea.withWidth(50).translated(4, 2), juce::Justification::centredLeft);
 
             if (clip == nullptr) {
                 graphics.setColour(juce::Colour(0xff91a0b4));
@@ -2276,31 +2422,45 @@ private:
                 const int w = std::max(4, static_cast<int>((note.durationBeats / clipBeats) * grid.getWidth()) - 1);
                 const int pitchRow = kPitchMax - 1 - note.pitch;
                 const int y = grid.getY() + pitchRow * rowH;
-                if (y < grid.getY() || y >= grid.getBottom()) {
-                    continue;
-                }
-                const bool selected = (note.pitch == lastClickedPitch_ && std::abs(note.startBeat - lastClickedBeat_) < 0.01);
+                if (y < grid.getY() || y >= grid.getBottom()) continue;
+
+                const bool sel = (note.pitch == lastClickedPitch_ && std::abs(note.startBeat - lastClickedBeat_) < 0.01);
                 auto noteRect = juce::Rectangle<int>(x, y, w, std::max(3, rowH - 1));
-                graphics.setColour(selected ? juce::Colour(0xffaef8ad) : juce::Colour(0xff76d275));
+                graphics.setColour(sel ? juce::Colour(0xffaef8ad) : juce::Colour(0xff76d275));
                 graphics.fillRoundedRectangle(noteRect.toFloat(), 3.0f);
                 graphics.setColour(juce::Colour(0xff3a8c39));
                 graphics.drawRoundedRectangle(noteRect.toFloat(), 3.0f, 0.5f);
+
+                // Velocity bar
+                const float velNorm = static_cast<float>(note.velocity) / 127.0f;
+                const int barH = std::max(2, static_cast<int>(velNorm * static_cast<float>(velArea.getHeight() - 6)));
+                const int barX = x;
+                const int barW = std::max(3, w - 1);
+                const juce::Colour velColour = sel ? juce::Colour(0xffaef8ad)
+                    : (velNorm > 0.75f ? juce::Colour(0xff5fbfff) : juce::Colour(0xff4a90c0));
+                graphics.setColour(velColour.withAlpha(0.7f));
+                graphics.fillRoundedRectangle(static_cast<float>(barX),
+                    static_cast<float>(velArea.getBottom() - barH - 3),
+                    static_cast<float>(barW), static_cast<float>(barH), 2.0f);
             }
         }
 
         void mouseDown(const juce::MouseEvent& event) override
         {
             auto* clip = selectedMidiClip();
-            if (clip == nullptr) {
-                return;
-            }
-
-            const auto grid = gridArea();
-            if (!grid.contains(event.getPosition())) {
-                return;
-            }
+            if (clip == nullptr) return;
 
             const double clipBeats = std::max(1.0, clip->lengthBeats);
+
+            // Velocity lane: dragging velocity
+            if (velocityArea().contains(event.getPosition()) && !event.mods.isRightButtonDown()) {
+                editVelocityAt(event, *clip, clipBeats);
+                return;
+            }
+
+            const auto grid = noteGridArea();
+            if (!grid.contains(event.getPosition())) return;
+
             const double beatClicked = ((event.x - grid.getX()) / static_cast<double>(grid.getWidth())) * clipBeats;
             const int rowH = std::max(1, grid.getHeight() / kPitchRange);
             const int pitchRow = (event.y - grid.getY()) / rowH;
@@ -2311,7 +2471,6 @@ private:
             history_.remember(project_);
 
             if (event.mods.isRightButtonDown()) {
-                // Remove any note at this pitch/beat
                 auto& notes = clip->midi.notes;
                 notes.erase(std::remove_if(notes.begin(), notes.end(), [&](const bandforge::MidiNote& n) {
                     return n.pitch == pitch && n.startBeat <= snappedBeat && snappedBeat < n.startBeat + n.durationBeats;
@@ -2319,7 +2478,6 @@ private:
                 lastClickedPitch_ = -1;
                 lastClickedBeat_ = -1.0;
             } else {
-                // Check if clicking an existing note (toggle off)
                 auto& notes = clip->midi.notes;
                 const auto it = std::find_if(notes.begin(), notes.end(), [&](const bandforge::MidiNote& n) {
                     return n.pitch == pitch && n.startBeat <= snappedBeat && snappedBeat < n.startBeat + n.durationBeats;
@@ -2340,45 +2498,127 @@ private:
                     lastClickedBeat_ = snappedBeat;
                 }
             }
-
             repaint();
         }
 
-    private:
-        juce::Rectangle<int> gridArea() const
+        void mouseDrag(const juce::MouseEvent& event) override
         {
-            return getLocalBounds().reduced(14).reduced(12).withTrimmedTop(34);
+            auto* clip = selectedMidiClip();
+            if (clip == nullptr || !velocityDragging_) return;
+            editVelocityAt(event, *clip, std::max(1.0, clip->lengthBeats));
+        }
+
+        void mouseUp(const juce::MouseEvent&) override
+        {
+            velocityDragging_ = false;
+        }
+
+        bool keyPressed(const juce::KeyPress& key) override
+        {
+            auto* clip = selectedMidiClip();
+            if (clip == nullptr) return false;
+
+            const bool shift = key.getModifiers().isShiftDown();
+            const bool ctrl  = key.getModifiers().isCtrlDown();
+            if (!shift) return false;
+
+            const int semitones = ctrl ? 12 : 1;
+            int delta = 0;
+            if (key.getKeyCode() == juce::KeyPress::upKey)   delta = +semitones;
+            if (key.getKeyCode() == juce::KeyPress::downKey) delta = -semitones;
+            if (delta == 0) return false;
+
+            history_.remember(project_);
+            for (auto& note : clip->midi.notes) {
+                note.pitch = std::clamp(note.pitch + delta, 0, 127);
+            }
+            if (lastClickedPitch_ >= 0) lastClickedPitch_ = std::clamp(lastClickedPitch_ + delta, 0, 127);
+            repaint();
+            return true;
+        }
+
+    private:
+        juce::Rectangle<int> noteGridArea() const
+        {
+            auto inner = getLocalBounds().reduced(14).reduced(12).withTrimmedTop(34);
+            return inner.withTrimmedBottom(kVelocityLaneH + 8);
+        }
+
+        juce::Rectangle<int> velocityArea() const
+        {
+            auto inner = getLocalBounds().reduced(14).reduced(12).withTrimmedTop(34);
+            return inner.withTop(inner.getBottom() - kVelocityLaneH);
+        }
+
+        void editVelocityAt(const juce::MouseEvent& event, bandforge::Clip& clip, double clipBeats)
+        {
+            const auto velArea = velocityArea();
+            const double beatClicked = ((event.x - velArea.getX()) / static_cast<double>(velArea.getWidth())) * clipBeats;
+
+            // Find note closest in x to click
+            bandforge::MidiNote* target = nullptr;
+            double bestDist = 0.5; // beats
+            for (auto& note : clip.midi.notes) {
+                const double dist = std::abs(note.startBeat - beatClicked);
+                if (dist < bestDist) { bestDist = dist; target = &note; }
+            }
+            if (target == nullptr) return;
+
+            if (!velocityDragging_) {
+                history_.remember(project_);
+                velocityDragging_ = true;
+            }
+
+            const float velNorm = 1.0f - std::clamp(
+                static_cast<float>(event.y - velArea.getY()) / static_cast<float>(velArea.getHeight()), 0.0f, 1.0f);
+            target->velocity = std::clamp(static_cast<int>(velNorm * 127.0f + 0.5f), 1, 127);
+            repaint();
+        }
+
+        void showQuantizeMenu()
+        {
+            juce::PopupMenu menu;
+            menu.addItem(1, "1/4 note (0.25 beats)");
+            menu.addItem(2, "1/8 note (0.125 beats)");
+            menu.addItem(3, "1/16 note (0.0625 beats)");
+            menu.addItem(4, "1/32 note (0.03125 beats)");
+            menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(quantizeButton_),
+                [this](int result) {
+                    if (result <= 0) return;
+                    const double grid[] = { 0.25, 0.125, 0.0625, 0.03125 };
+                    auto* clip = selectedMidiClip();
+                    if (clip == nullptr) return;
+                    history_.remember(project_);
+                    bandforge::TimelineEditor editor(project_);
+                    editor.quantizeMidiClip(selection_.selectedTrackId, selection_.selectedClipId,
+                        grid[static_cast<std::size_t>(result - 1)], 1.0);
+                    repaint();
+                });
         }
 
         bandforge::Clip* selectedMidiClip()
         {
-            if (selection_.selectedTrackId == 0 || selection_.selectedClipId == 0) {
-                return nullptr;
-            }
+            if (selection_.selectedTrackId == 0 || selection_.selectedClipId == 0) return nullptr;
             auto* clip = project_.findClip(selection_.selectedTrackId, selection_.selectedClipId);
-            if (clip == nullptr || clip->kind != bandforge::ClipKind::Midi) {
-                return nullptr;
-            }
+            if (clip == nullptr || clip->kind != bandforge::ClipKind::Midi) return nullptr;
             return clip;
         }
 
         const bandforge::Clip* selectedMidiClip() const
         {
-            if (selection_.selectedTrackId == 0 || selection_.selectedClipId == 0) {
-                return nullptr;
-            }
+            if (selection_.selectedTrackId == 0 || selection_.selectedClipId == 0) return nullptr;
             const auto* clip = project_.findClip(selection_.selectedTrackId, selection_.selectedClipId);
-            if (clip == nullptr || clip->kind != bandforge::ClipKind::Midi) {
-                return nullptr;
-            }
+            if (clip == nullptr || clip->kind != bandforge::ClipKind::Midi) return nullptr;
             return clip;
         }
 
         bandforge::Project& project_;
         bandforge::ProjectHistory& history_;
         bandforge_app::SelectionState& selection_;
+        juce::TextButton quantizeButton_;
         int lastClickedPitch_ = -1;
         double lastClickedBeat_ = -1.0;
+        bool velocityDragging_ = false;
     };
 
     class SmartControlsView final : public juce::Component, private juce::Timer {
@@ -2556,7 +2796,12 @@ MainComponent::MainComponent()
     , library_(makeBuiltInLibrary())
 {
     trackList_ = std::make_unique<TrackListComponent>(project_, history_, selection_);
+    trackList_->getTrackLevel = [this](bandforge::TrackId id) -> float {
+        const auto it = trackDisplayLevels_.find(id);
+        return it != trackDisplayLevels_.end() ? it->second : 0.0f;
+    };
     timeline_ = std::make_unique<TimelineComponent>(project_, transport_, grid_, history_, selection_);
+    timeline_->setAudioEngine(&audioEngine_);
     libraryPanel_ = std::make_unique<LibraryPanelComponent>(library_, project_, history_, transport_, grid_, selection_);
 
     KeyboardCallbacks keyCbs;
@@ -2675,10 +2920,35 @@ MainComponent::MainComponent()
     // ── Plugin hosting setup ───────────────────────────────────────────────
     formatManager_.addDefaultFormats(); // registers VST3 + LV2 on Linux
 
+    // Wire JUCE AudioFormatManager as the audio loader for AudioEngine
+    audioEngine_.juceLoader = [this](const std::string& path) -> bandforge::AudioEngine::CachedAudioClip {
+        juce::AudioFormatManager mgr;
+        mgr.registerBasicFormats();
+        const juce::File f(juce::String::fromUTF8(path.c_str()));
+        std::unique_ptr<juce::AudioFormatReader> reader(mgr.createReaderFor(f));
+        if (!reader) return {};
+        bandforge::AudioEngine::CachedAudioClip clip;
+        clip.sampleRate = static_cast<int>(reader->sampleRate);
+        clip.channels   = static_cast<int>(std::min(reader->numChannels, 2u));
+        const auto numFrames = static_cast<int>(reader->lengthInSamples);
+        juce::AudioBuffer<float> buf(clip.channels, numFrames);
+        reader->read(&buf, 0, numFrames, 0, true, clip.channels > 1);
+        clip.samples.resize(static_cast<std::size_t>(numFrames * clip.channels));
+        for (int ch = 0; ch < clip.channels; ++ch)
+            for (int i = 0; i < numFrames; ++i)
+                clip.samples[static_cast<std::size_t>(i * clip.channels + ch)] = buf.getSample(ch, i);
+        return clip;
+    };
+
     pluginsButton_.setLookAndFeel(toolbarLaf_.get());
     pluginsButton_.setTooltip("Browse & load VST3/LV2 plugins");
     pluginsButton_.onClick = [this] { openPluginBrowser(); };
     addAndMakeVisible(pluginsButton_);
+
+    settingsButton_.setLookAndFeel(toolbarLaf_.get());
+    settingsButton_.setTooltip("Audio & MIDI device settings");
+    settingsButton_.onClick = [this] { openDeviceSettings(); };
+    addAndMakeVisible(settingsButton_);
 
     // ── Recording setup ────────────────────────────────────────────────────
     audioRecorder_ = std::make_unique<AudioRecorder>();
@@ -2719,7 +2989,7 @@ MainComponent::~MainComponent()
                        &playButton_, &stopButton_, &recordButton_,
                        &addMidiButton_, &addAudioButton_, &loopButton_,
                        &metronomeButton_, &snapButton_, &zoomOutButton_,
-                       &zoomInButton_, &exportButton_, &pluginsButton_ }) {
+                       &zoomInButton_, &exportButton_, &pluginsButton_, &settingsButton_ }) {
         btn->setLookAndFeel(nullptr);
     }
     shutdownAudio();
@@ -2772,6 +3042,8 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
 
     const bool playing = (transport_.state() != bandforge::TransportState::Stopped);
 
+    const bandforge::TempoMap tempoMap(project_);
+
     if (playing) {
         const double startBeat = transport_.positionBeat();
         audioEngine_.renderPreview(project_, startBeat, renderScratch_);
@@ -2810,12 +3082,12 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         }
 
         lastPositionBeat_ = startBeat;
-        transport_.advance(project_, static_cast<double>(bufferToFill.numSamples) / currentSampleRate_);
+        transport_.advance(tempoMap, static_cast<double>(bufferToFill.numSamples) / currentSampleRate_);
     } else {
         lastPositionBeat_ = -1.0;
     }
 
-    // ── VST3/LV2 instrument plugins (live keyboard → plugin → mix) ───────────
+    // ── VST3/LV2 instrument plugins (live keyboard → plugin → latency-comp mix) ─
     {
         const std::lock_guard<std::mutex> lock(pluginMutex_);
         for (auto& [tid, tp] : trackPlugins_) {
@@ -2824,14 +3096,34 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
             tp->pluginBuffer.setSize(2, bufferToFill.numSamples, false, false, true);
             tp->instance->processBlock(tp->pluginBuffer, midiIn);
             const float pluginGain = 0.7f;
-            for (int ch = 0; ch < channels; ++ch) {
-                const auto* pluginCh = tp->pluginBuffer.getReadPointer(
-                    std::min(ch, tp->pluginBuffer.getNumChannels() - 1));
-                for (int s = 0; s < bufferToFill.numSamples; ++s) {
-                    renderScratch_[(static_cast<std::size_t>(s) * static_cast<std::size_t>(channels)) + static_cast<std::size_t>(ch)]
-                        += pluginCh[s] * pluginGain;
+            const int latency = std::max(0, tp->latencySamples);
+
+            // Refresh delay buffer capacity if latency changed
+            const int delayCap = std::max(1, latency + bufferToFill.numSamples + 1);
+            for (auto& db : tp->delayBuffers) {
+                if (static_cast<int>(db.size()) < delayCap) {
+                    db.assign(static_cast<std::size_t>(delayCap), 0.0f);
+                    tp->delayWritePos = 0;
                 }
             }
+
+            for (int ch = 0; ch < channels && ch < static_cast<int>(tp->delayBuffers.size()); ++ch) {
+                const auto* pluginCh = tp->pluginBuffer.getReadPointer(
+                    std::min(ch, tp->pluginBuffer.getNumChannels() - 1));
+                auto& db = tp->delayBuffers[static_cast<std::size_t>(ch)];
+                const int cap = static_cast<int>(db.size());
+
+                for (int s = 0; s < bufferToFill.numSamples; ++s) {
+                    // Write plugin output into delay ring
+                    db[static_cast<std::size_t>((tp->delayWritePos + s) % cap)] = pluginCh[s];
+                    // Read from (latency) samples ago
+                    const int readPos = ((tp->delayWritePos + s - latency) % cap + cap) % cap;
+                    renderScratch_[(static_cast<std::size_t>(s) * static_cast<std::size_t>(channels)) + static_cast<std::size_t>(ch)]
+                        += db[static_cast<std::size_t>(readPos)] * pluginGain;
+                }
+            }
+            tp->delayWritePos = (tp->delayWritePos + bufferToFill.numSamples)
+                % std::max(1, static_cast<int>(tp->delayBuffers.empty() ? 1 : tp->delayBuffers[0].size()));
         }
     }
 
@@ -2887,6 +3179,7 @@ void MainComponent::resized()
     zoomInButton_.setBounds(top.removeFromLeft(36).reduced(3, 4));
     exportButton_.setBounds(top.removeFromLeft(76).reduced(3, 4));
     pluginsButton_.setBounds(top.removeFromLeft(76).reduced(3, 4));
+    settingsButton_.setBounds(top.removeFromLeft(72).reduced(3, 4));
     tempoLabel_.setBounds(top.removeFromRight(112).reduced(4, 4));
     positionLabel_.setBounds(top.removeFromRight(144).reduced(4, 4));
 
@@ -2905,6 +3198,40 @@ void MainComponent::paint(juce::Graphics& graphics)
 
 void MainComponent::timerCallback()
 {
+    // Update per-track VU meter levels
+    const double beat = transport_.positionBeat();
+    const bool isPlaying = (transport_.state() != bandforge::TransportState::Stopped);
+    const bool anyTrackSoloed = std::any_of(project_.tracks.begin(), project_.tracks.end(),
+        [](const bandforge::Track& t) { return t.mixer.solo; });
+
+    for (const auto& track : project_.tracks) {
+        float& level = trackDisplayLevels_[track.id];
+        const bool audible = !track.mixer.muted && (!anyTrackSoloed || track.mixer.solo);
+        if (isPlaying && audible) {
+            bool hasActiveClip = std::any_of(track.clips.begin(), track.clips.end(),
+                [&](const bandforge::Clip& c) { return !c.muted && c.range().contains(beat); });
+            if (hasActiveClip) {
+                level = std::min(1.0f, static_cast<float>(bandforge::mixer::dbToLinear(track.mixer.volumeDb)));
+            } else {
+                level *= 0.82f;
+            }
+        } else {
+            level *= 0.82f;
+        }
+        if (level < 0.01f) level = 0.0f;
+    }
+
+    // Auto-save every 2 minutes (timer runs at 30 Hz → 3600 ticks)
+    ++autoSaveCounterTicks_;
+    if (autoSaveCounterTicks_ >= 3600) {
+        autoSaveCounterTicks_ = 0;
+        try {
+            const auto autoSaveDir = juce::File::getSpecialLocation(juce::File::userDocumentsDirectory)
+                .getChildFile(juce::String::fromUTF8(project_.name.c_str()) + ".bandforge.autosave");
+            project_.saveBundle(autoSaveDir.getFullPathName().toStdString());
+        } catch (...) {}
+    }
+
     refreshViews();
 }
 
@@ -3135,10 +3462,23 @@ void MainComponent::stopRecording()
             auto& newTrack = project_.addTrack(bandforge::TrackKind::Audio, "Recording");
             targetTrack = &newTrack;
         }
+
+        // Copy temp WAV into the project bundle's Audio/ directory
+        juce::File destFile;
+        const auto bundlePath = juce::File::getSpecialLocation(juce::File::userDocumentsDirectory)
+            .getChildFile(juce::String::fromUTF8(project_.name.c_str()) + ".bandforge")
+            .getChildFile("Audio");
+        if (bundlePath.isDirectory() || bundlePath.createDirectory()) {
+            destFile = bundlePath.getChildFile(recordingFile_.getFileName());
+            recordingFile_.copyFileTo(destFile);
+        } else {
+            destFile = recordingFile_; // fallback: keep temp path
+        }
+
         history_.remember(project_);
         auto& clip = project_.addAudioClip(targetTrack->id,
             "Recording " + juce::Time::getCurrentTime().formatted("%H:%M:%S").toStdString(),
-            recordingFile_.getFullPathName().toStdString(),
+            destFile.getFullPathName().toStdString(),
             recordStartBeat_, durationBeats);
         clip.audio.stretchToProjectTempo = false;
         selection_.selectedTrackId = targetTrack->id;
@@ -3273,15 +3613,29 @@ void MainComponent::loadPluginOnTrack(bandforge::TrackId trackId, const juce::Pl
 
     auto tp = std::make_unique<TrackPlugin>();
     tp->pluginBuffer.setSize(2, static_cast<int>(currentSampleRate_ / 30));
+    tp->latencySamples = instance->getLatencySamples();
     tp->instance = std::move(instance);
     tp->prepared = true;
+
+    // Pre-allocate delay line (capacity = latency + 1 block, minimum 1)
+    const int delayCap = std::max(1, tp->latencySamples + static_cast<int>(currentSampleRate_ / 30) + 1);
+    tp->delayBuffers.assign(2, std::vector<float>(static_cast<std::size_t>(delayCap), 0.0f));
+    tp->delayWritePos = 0;
 
     {
         const std::lock_guard<std::mutex> lock(pluginMutex_);
         trackPlugins_[trackId] = std::move(tp);
     }
 
-    // Show the plugin's editor window if it has one
+    // Close any existing editor window for this track before opening a new one
+    {
+        const auto it = pluginWindows_.find(trackId);
+        if (it != pluginWindows_.end()) {
+            it->second->setVisible(false);
+            pluginWindows_.erase(it);
+        }
+    }
+
     if (trackPlugins_[trackId] && trackPlugins_[trackId]->instance->hasEditor()) {
         auto* editor = trackPlugins_[trackId]->instance->createEditor();
         if (editor) {
@@ -3291,6 +3645,7 @@ void MainComponent::loadPluginOnTrack(bandforge::TrackId trackId, const juce::Pl
             dw->setResizable(true, false);
             dw->centreWithSize(editor->getWidth(), editor->getHeight());
             dw->setVisible(true);
+            pluginWindows_[trackId] = dw;
         }
     } else {
         juce::AlertWindow::showMessageBoxAsync(juce::AlertWindow::InfoIcon,
@@ -3368,6 +3723,30 @@ bandforge::TrackKind MainComponent::selectedTrackKind() const
         }
     }
     return bandforge::TrackKind::Keys;
+}
+
+void MainComponent::openDeviceSettings()
+{
+    // Build a dialog containing AudioDeviceSelectorComponent (covers audio + MIDI devices)
+    auto* selector = new juce::AudioDeviceSelectorComponent(
+        deviceManager,
+        /*minAudioInputChannels=*/  0,
+        /*maxAudioInputChannels=*/  2,
+        /*minAudioOutputChannels=*/ 2,
+        /*maxAudioOutputChannels=*/ 2,
+        /*showMidiInputOptions=*/   true,
+        /*showMidiOutputSelector=*/ true,
+        /*showChannelsAsStereoPairs=*/ true,
+        /*hideAdvancedOptionsWithButton=*/ false);
+
+    selector->setSize(520, 420);
+
+    auto* dw = new juce::DocumentWindow("Audio & MIDI Devices",
+        juce::Colour(0xff1a2130), juce::DocumentWindow::closeButton, true);
+    dw->setContentOwned(selector, true);
+    dw->setResizable(false, false);
+    dw->centreWithSize(520, 420);
+    dw->setVisible(true);
 }
 
 void MainComponent::exportWav()

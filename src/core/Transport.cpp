@@ -102,13 +102,12 @@ void Transport::setLoop(bool enabled, double startBeat, double endBeat)
     loopEndBeat_ = std::max(loopStartBeat_ + 0.03125, std::max(startBeat, endBeat));
 }
 
-void Transport::advance(const Project& project, double seconds)
+void Transport::advance(const TempoMap& tempoMap, double seconds)
 {
     if (state_ == TransportState::Stopped || seconds <= 0.0) {
         return;
     }
 
-    TempoMap tempoMap(project);
     const double nextSeconds = tempoMap.beatToSeconds(positionBeat_) + seconds;
     positionBeat_ = tempoMap.secondsToBeat(nextSeconds);
 

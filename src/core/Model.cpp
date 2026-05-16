@@ -741,6 +741,13 @@ JsonValue Project::toJson() const
         signatures.push_back(timeSignatureToJson(marker));
     }
 
+    JsonValue::Array jsonMarkers;
+    for (const auto& m : markers) {
+        jsonMarkers.push_back(JsonValue::Object {
+            { "name", m.name }, { "beat", m.beat }, { "color", m.color }
+        });
+    }
+
     JsonValue::Array jsonTracks;
     for (const auto& track : tracks) {
         jsonTracks.push_back(trackToJson(track));
@@ -756,6 +763,7 @@ JsonValue Project::toJson() const
         { "nextClipId", static_cast<double>(nextClipId_) },
         { "tempoMarkers", tempo },
         { "timeSignatures", signatures },
+        { "markers", jsonMarkers },
         { "tracks", jsonTracks },
     };
 }
@@ -799,6 +807,20 @@ Project Project::fromJson(const JsonValue& json)
     }
     std::sort(project.timeSignatures.begin(), project.timeSignatures.end(), [](const auto& left, const auto& right) {
         return left.beat < right.beat;
+    });
+
+    project.markers.clear();
+    if (const auto* markersJson = json.find("markers"); markersJson != nullptr && markersJson->isArray()) {
+        for (const auto& m : markersJson->array()) {
+            bandforge::Marker marker;
+            marker.name  = readString(m, "name", "");
+            marker.beat  = readNumber(m, "beat", 0.0);
+            marker.color = readString(m, "color", "#FFD740");
+            project.markers.push_back(marker);
+        }
+    }
+    std::sort(project.markers.begin(), project.markers.end(), [](const auto& a, const auto& b) {
+        return a.beat < b.beat;
     });
 
     project.tracks.clear();

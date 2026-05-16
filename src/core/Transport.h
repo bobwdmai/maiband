@@ -26,7 +26,7 @@ public:
 
     void setPositionBeat(double beat);
     void setLoop(bool enabled, double startBeat, double endBeat);
-    void advance(const Project& project, double seconds);
+    void advance(const TempoMap& tempoMap, double seconds);
 
     [[nodiscard]] TransportState state() const noexcept;
     [[nodiscard]] double positionBeat() const noexcept;

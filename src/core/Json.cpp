@@ -195,32 +195,75 @@ private:
         return value;
     }
 
+    static unsigned int parseHex4(std::string_view text, std::size_t pos)
+    {
+        unsigned int cp = 0;
+        for (int i = 0; i < 4; ++i) {
+            const char ch = text[pos + static_cast<std::size_t>(i)];
+            cp <<= 4U;
+            if (ch >= '0' && ch <= '9')      cp += static_cast<unsigned int>(ch - '0');
+            else if (ch >= 'a' && ch <= 'f') cp += static_cast<unsigned int>(ch - 'a' + 10);
+            else if (ch >= 'A' && ch <= 'F') cp += static_cast<unsigned int>(ch - 'A' + 10);
+            else return 0xFFFFFFFFU; // sentinel: invalid
+        }
+        return cp;
+    }
+
+    static void appendUtf8(std::string& result, unsigned int cp)
+    {
+        if (cp <= 0x7F) {
+            result.push_back(static_cast<char>(cp));
+        } else if (cp <= 0x7FF) {
+            result.push_back(static_cast<char>(0xC0u | (cp >> 6)));
+            result.push_back(static_cast<char>(0x80u | (cp & 0x3Fu)));
+        } else if (cp <= 0xFFFF) {
+            result.push_back(static_cast<char>(0xE0u | (cp >> 12)));
+            result.push_back(static_cast<char>(0x80u | ((cp >> 6) & 0x3Fu)));
+            result.push_back(static_cast<char>(0x80u | (cp & 0x3Fu)));
+        } else if (cp <= 0x10FFFF) {
+            result.push_back(static_cast<char>(0xF0u | (cp >> 18)));
+            result.push_back(static_cast<char>(0x80u | ((cp >> 12) & 0x3Fu)));
+            result.push_back(static_cast<char>(0x80u | ((cp >> 6)  & 0x3Fu)));
+            result.push_back(static_cast<char>(0x80u | (cp & 0x3Fu)));
+        } else {
+            result.push_back('?'); // out-of-range replacement
+        }
+    }
+
     void appendUnicodeEscape(std::string& result)
     {
-        if (position_ + 4 > text_.size()) {
+        if (position_ + 4 > text_.size())
             fail("Incomplete unicode escape");
-        }
 
-        unsigned int codepoint = 0;
-        for (int i = 0; i < 4; ++i) {
-            const char ch = get();
-            codepoint <<= 4U;
-            if (ch >= '0' && ch <= '9') {
-                codepoint += static_cast<unsigned int>(ch - '0');
-            } else if (ch >= 'a' && ch <= 'f') {
-                codepoint += static_cast<unsigned int>(ch - 'a' + 10);
-            } else if (ch >= 'A' && ch <= 'F') {
-                codepoint += static_cast<unsigned int>(ch - 'A' + 10);
-            } else {
-                fail("Invalid unicode escape");
+        const unsigned int cp1 = parseHex4(text_, position_);
+        if (cp1 == 0xFFFFFFFFU) fail("Invalid unicode escape");
+        position_ += 4;
+
+        // High surrogate — look for low surrogate pair \uDC00–\uDFFF
+        if (cp1 >= 0xD800u && cp1 <= 0xDBFFu) {
+            if (position_ + 6 <= text_.size()
+                && text_[position_] == '\\'
+                && text_[position_ + 1] == 'u') {
+                const unsigned int cp2 = parseHex4(text_, position_ + 2);
+                if (cp2 != 0xFFFFFFFFU && cp2 >= 0xDC00u && cp2 <= 0xDFFFu) {
+                    position_ += 6;
+                    const unsigned int full = 0x10000u + ((cp1 - 0xD800u) << 10) + (cp2 - 0xDC00u);
+                    appendUtf8(result, full);
+                    return;
+                }
             }
+            // Unpaired high surrogate — emit replacement
+            result.push_back('?');
+            return;
         }
 
-        if (codepoint <= 0x7F) {
-            result.push_back(static_cast<char>(codepoint));
-        } else {
+        // Low surrogate without preceding high surrogate
+        if (cp1 >= 0xDC00u && cp1 <= 0xDFFFu) {
             result.push_back('?');
+            return;
         }
+
+        appendUtf8(result, cp1);
     }
 
     void consumeDigits()

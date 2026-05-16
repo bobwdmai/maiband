@@ -11,6 +11,12 @@
 
 namespace bandforge {
 
+struct Marker {
+    std::string name;
+    double beat = 0.0;
+    std::string color = "#FFD740";
+};
+
 struct TempoMarker {
     double beat = 0.0;
     double bpm = 120.0;
@@ -133,6 +139,7 @@ public:
     double sampleRate = 48000.0;
     std::vector<TempoMarker> tempoMarkers { TempoMarker {} };
     std::vector<TimeSignatureMarker> timeSignatures { TimeSignatureMarker {} };
+    std::vector<Marker> markers;
     std::vector<Track> tracks;
 
     [[nodiscard]] Track* findTrack(TrackId id);

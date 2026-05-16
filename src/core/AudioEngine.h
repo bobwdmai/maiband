@@ -2,10 +2,13 @@
 
 #include "core/Model.h"
 
+#include <atomic>
+#include <functional>
 #include <map>
 #include <mutex>
 #include <span>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace bandforge {
@@ -45,10 +48,22 @@ public:
 
     [[nodiscard]] AudioEngineConfig config() const noexcept;
 
+    // Returns cached audio for path if already loaded, without triggering a load.
+    // Safe to call from any thread including the UI/paint thread.
+    [[nodiscard]] const CachedAudioClip* peekAudioForPath(const std::string& mediaPath) const;
+
+    // Optional JUCE-backed audio loader. When set, used instead of the built-in WAV parser.
+    // Must be set before any audio clips are rendered. Not called on the audio thread.
+    std::function<CachedAudioClip(const std::string& path)> juceLoader;
+
+    // Pre-compute a stretched clip in a background thread so the audio thread
+    // never blocks. Until ready, renderPreview plays silence for that clip.
+    void requestStretch(const std::string& mediaPath, double stretchRatio) const;
+
     // Returns a time-stretched copy of the audio at the given ratio (ratio = dstLen/srcLen).
     // Result is cached keyed by (path, ratio). Thread-safe.
-    [[nodiscard]] const CachedAudioClip& stretchedClipFor(const std::string& mediaPath,
-                                                           double stretchRatio) const;
+    [[nodiscard]] const CachedAudioClip* stretchedClipIfReady(const std::string& mediaPath,
+                                                               double stretchRatio) const;
 
 private:
     [[nodiscard]] const CachedAudioClip& audioForPath(const std::string& mediaPath) const;
@@ -60,6 +75,7 @@ private:
     // Keyed by {mediaPath, ratio_quantised_to_3dp}
     mutable std::mutex stretchMutex_;
     mutable std::map<std::pair<std::string, int>, CachedAudioClip> stretchCache_;
+    mutable std::map<std::pair<std::string, int>, bool> stretchPending_;
 
     std::mutex liveNotesMutex_;
     std::vector<LiveNote> liveNotes_;

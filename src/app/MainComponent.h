@@ -61,6 +61,7 @@ private:
     void stopRecording();
     void openPluginBrowser();
     void loadPluginOnTrack(bandforge::TrackId trackId, const juce::PluginDescription& desc);
+    void openDeviceSettings();
     [[nodiscard]] bandforge::TrackKind selectedTrackKind() const;
 
     // juce::MidiInputCallback
@@ -93,6 +94,7 @@ private:
     juce::TextButton zoomOutButton_ { "-" };
     juce::TextButton zoomInButton_ { "+" };
     juce::TextButton exportButton_ { "Export" };
+    juce::TextButton settingsButton_ { "Devices" };
     juce::Label positionLabel_;
     juce::Label tempoLabel_;
 
@@ -107,6 +109,12 @@ private:
     double currentSampleRate_ = 48000.0;
     bool metronomeEnabled_ = false;
     double lastPositionBeat_ = -1.0;
+
+    // ── VU meter levels (updated in timerCallback, read from TrackListComponent) ─
+    std::map<bandforge::TrackId, float> trackDisplayLevels_;
+
+    // ── Auto-save ─────────────────────────────────────────────────────────────
+    int autoSaveCounterTicks_ = 0;
 
     int keyboardOctave_ = 4;
     std::map<int, int> activeNoteKeys_; // keyCode → MIDI pitch
@@ -133,12 +141,18 @@ private:
         std::unique_ptr<juce::AudioPluginInstance> instance;
         juce::AudioBuffer<float> pluginBuffer;
         bool prepared = false;
+        int latencySamples = 0;
+
+        // Delay line for compensating this plugin's latency against the dry mix
+        std::vector<std::vector<float>> delayBuffers; // one ring buffer per channel
+        int delayWritePos = 0;
     };
     std::mutex pluginMutex_;
     std::map<bandforge::TrackId, std::unique_ptr<TrackPlugin>> trackPlugins_;
 
     juce::TextButton pluginsButton_ { "Plugins" };
     std::unique_ptr<juce::FileChooser> pluginChooser_;
+    std::map<bandforge::TrackId, juce::DocumentWindow*> pluginWindows_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

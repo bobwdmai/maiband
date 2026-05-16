@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace bandforge {
@@ -419,6 +420,12 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
             }
 
             const auto trackGain = static_cast<float>(mixer::dbToLinear(track.mixer.volumeDb));
+            const auto [panL, panR] = mixer::equalPowerPan(track.mixer.pan);
+            const auto chanGain = [&](int ch) -> float {
+                if (config_.channels < 2) return trackGain;
+                return trackGain * static_cast<float>(ch == 0 ? panL : panR);
+            };
+
             if (isMidiTrackKind(track.kind)) {
                 float trackSample = 0.0f;
                 for (const auto& clip : track.clips) {
@@ -434,8 +441,8 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
                     }
                 }
 
-                for (auto& output : mixedFrame) {
-                    output += trackSample * trackGain;
+                for (int ch = 0; ch < config_.channels; ++ch) {
+                    mixedFrame[static_cast<std::size_t>(ch)] += trackSample * chanGain(ch);
                 }
                 continue;
             }
@@ -456,12 +463,18 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
                 const AudioEngine::CachedAudioClip* audio = &rawAudio;
 
                 if (clip.audio.stretchToProjectTempo && clip.lengthBeats > 0.0) {
-                    // Use OLA-stretched version for pitch-preserved tempo matching
                     const double clipSeconds = tempoMap.beatToSeconds(clip.startBeat + clip.lengthBeats)
                                             - tempoMap.beatToSeconds(clip.startBeat);
                     const double ratio = clipSeconds / sourceDuration;
                     if (std::abs(ratio - 1.0) > 0.005) {
-                        audio = &stretchedClipFor(clip.audio.mediaPath, ratio);
+                        const auto* stretched = stretchedClipIfReady(clip.audio.mediaPath, ratio);
+                        if (stretched) {
+                            audio = stretched;
+                        } else {
+                            // Not ready yet — kick off background stretch and play silence
+                            requestStretch(clip.audio.mediaPath, ratio);
+                            continue;
+                        }
                     }
                     sourceSeconds += (localBeat / clip.lengthBeats) * durationSeconds(*audio);
                 } else {
@@ -470,7 +483,8 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
 
                 const auto clipGain = static_cast<float>(mixer::dbToLinear(clip.audio.gainDb));
                 for (int channel = 0; channel < config_.channels; ++channel) {
-                    mixedFrame[static_cast<std::size_t>(channel)] += audioSampleAt(*audio, sourceSeconds, channel) * trackGain * clipGain;
+                    mixedFrame[static_cast<std::size_t>(channel)] +=
+                        audioSampleAt(*audio, sourceSeconds, channel) * chanGain(channel) * clipGain;
                 }
             }
         }
@@ -550,6 +564,13 @@ void AudioEngine::renderAndAdvanceLiveNotes(std::span<float> interleavedOutput)
     liveClockSeconds_ += blockSeconds;
 }
 
+const AudioEngine::CachedAudioClip* AudioEngine::peekAudioForPath(const std::string& mediaPath) const
+{
+    std::lock_guard lock(cacheMutex_);
+    const auto found = audioCache_.find(mediaPath);
+    return found != audioCache_.end() ? &found->second : nullptr;
+}
+
 const AudioEngine::CachedAudioClip& AudioEngine::audioForPath(const std::string& mediaPath) const
 {
     {
@@ -560,36 +581,51 @@ const AudioEngine::CachedAudioClip& AudioEngine::audioForPath(const std::string&
         }
     }
 
-    auto loaded = loadWavFile(mediaPath);
+    CachedAudioClip loaded;
+    if (juceLoader) {
+        loaded = juceLoader(mediaPath);
+    } else {
+        loaded = loadWavFile(mediaPath);
+    }
     std::lock_guard lock(cacheMutex_);
     auto [inserted, _] = audioCache_.emplace(mediaPath, std::move(loaded));
     return inserted->second;
 }
 
-const AudioEngine::CachedAudioClip& AudioEngine::stretchedClipFor(
-    const std::string& mediaPath, double stretchRatio) const
+void AudioEngine::requestStretch(const std::string& mediaPath, double stretchRatio) const
 {
-    // Quantise ratio to 3 decimal places so nearby ratios reuse the same entry.
     const int ratioKey = static_cast<int>(std::round(stretchRatio * 1000.0));
     const auto key = std::make_pair(mediaPath, ratioKey);
 
     {
         std::lock_guard lock(stretchMutex_);
-        const auto found = stretchCache_.find(key);
-        if (found != stretchCache_.end()) {
-            return found->second;
-        }
+        if (stretchCache_.count(key) || stretchPending_.count(key))
+            return;
+        stretchPending_[key] = true;
     }
 
-    // Load source then stretch (this may take a moment; only happens once per ratio).
-    const auto& src = audioForPath(mediaPath);
-    auto stretched = (std::abs(stretchRatio - 1.0) < 0.005)
-        ? src  // ratio ≈ 1 — no stretching needed
-        : olaStretch(src, stretchRatio);
+    // Capture by value so the thread owns everything it needs
+    const std::string path = mediaPath;
+    const double ratio = stretchRatio;
+    std::thread([this, path, ratio, key]() {
+        const auto& src = audioForPath(path);
+        auto stretched = (std::abs(ratio - 1.0) < 0.005)
+            ? src
+            : olaStretch(src, ratio);
+        std::lock_guard lock(stretchMutex_);
+        stretchCache_.emplace(key, std::move(stretched));
+        stretchPending_.erase(key);
+    }).detach();
+}
 
+const AudioEngine::CachedAudioClip* AudioEngine::stretchedClipIfReady(
+    const std::string& mediaPath, double stretchRatio) const
+{
+    const int ratioKey = static_cast<int>(std::round(stretchRatio * 1000.0));
+    const auto key = std::make_pair(mediaPath, ratioKey);
     std::lock_guard lock(stretchMutex_);
-    auto [it, _] = stretchCache_.emplace(key, std::move(stretched));
-    return it->second;
+    const auto found = stretchCache_.find(key);
+    return found != stretchCache_.end() ? &found->second : nullptr;
 }
 
 } // namespace bandforge

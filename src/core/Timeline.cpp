@@ -49,8 +49,9 @@ bool TimelineEditor::trimClip(TrackId trackId, ClipId clipId, double newStartBea
         return false;
     }
 
+    const double minLength = grid.snapEnabled && grid.snapBeats > 0.0 ? grid.snapBeats : 0.03125;
     clip->startBeat = std::max(0.0, grid.snap(newStartBeat));
-    clip->lengthBeats = std::max(0.03125, grid.snap(newLengthBeats));
+    clip->lengthBeats = std::max(minLength, newLengthBeats);
     return true;
 }
 
@@ -64,17 +65,18 @@ std::optional<ClipId> TimelineEditor::duplicateClip(TrackId trackId, ClipId clip
     Clip copy = *original;
     copy.startBeat = std::max(0.0, copy.startBeat + beatOffset);
 
+    const std::string copyName = copy.name + " Copy";
     Clip* inserted = nullptr;
     if (copy.kind == ClipKind::Midi) {
-        inserted = &project_.addMidiClip(trackId, copy.name + " Copy", copy.startBeat, copy.lengthBeats);
+        inserted = &project_.addMidiClip(trackId, copyName, copy.startBeat, copy.lengthBeats);
     } else {
-        inserted = &project_.addAudioClip(trackId, copy.name + " Copy", copy.audio.mediaPath, copy.startBeat, copy.lengthBeats);
+        inserted = &project_.addAudioClip(trackId, copyName, copy.audio.mediaPath, copy.startBeat, copy.lengthBeats);
     }
 
     const ClipId newId = inserted->id;
     *inserted = copy;
     inserted->id = newId;
-    inserted->name += " Copy";
+    inserted->name = copyName;
     return newId;
 }
 
