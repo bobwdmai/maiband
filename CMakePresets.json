@@ -1,0 +1,47 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "core",
+      "displayName": "Core Library and Tests",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build-core",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "BANDFORGE_BUILD_APP": "OFF",
+        "BANDFORGE_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "app-fetch-juce",
+      "displayName": "Desktop App with Fetched JUCE",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "BANDFORGE_BUILD_APP": "ON",
+        "BANDFORGE_FETCH_JUCE": "ON",
+        "BANDFORGE_BUILD_TESTS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "core",
+      "configurePreset": "core"
+    },
+    {
+      "name": "app-fetch-juce",
+      "configurePreset": "app-fetch-juce"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "core",
+      "configurePreset": "core",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

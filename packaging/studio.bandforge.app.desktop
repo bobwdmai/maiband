@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=BandForge
+GenericName=Music Creation Workstation
+Comment=Record, arrange, edit, mix, and export songs on Ubuntu
+Exec=BandForge
+Icon=studio.bandforge.app
+Categories=AudioVideo;Audio;Midi;Recorder;
+Terminal=false

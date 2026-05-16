@@ -1,0 +1,12 @@
+build*/
+third_party/JUCE/
+*.bandforge/
+*.wav
+!assets/library/loops/*.wav
+*.aiff
+*.flac
+*.mp3
+*.ogg
+.cache/
+.idea/
+.vscode/

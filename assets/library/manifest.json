@@ -1,0 +1,5391 @@
+{
+  "schemaVersion": "1.0",
+  "loops": [
+    {
+      "id": "loop-audio-drums-clean-1",
+      "name": "Clean Drums",
+      "kind": "audio",
+      "path": "loops/drums-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-drums-clean-1",
+      "name": "Clean Drums Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "drum-kit",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-drums-warm-2",
+      "name": "Warm Drums",
+      "kind": "audio",
+      "path": "loops/drums-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-drums-warm-2",
+      "name": "Warm Drums Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "drum-kit",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-drums-wide-3",
+      "name": "Wide Drums",
+      "kind": "audio",
+      "path": "loops/drums-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-drums-wide-3",
+      "name": "Wide Drums Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "drum-kit",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-drums-drive-4",
+      "name": "Drive Drums",
+      "kind": "audio",
+      "path": "loops/drums-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-drums-drive-4",
+      "name": "Drive Drums Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "drum-kit",
+      "instrument": "Drums",
+      "genre": "Rock",
+      "key": "C",
+      "bpm": 120,
+      "beats": 4,
+      "tags": [
+        "drum-kit",
+        "rock",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 1.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 3.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 36,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 5.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 42,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 7.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 42,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-808-clean-1",
+      "name": "Clean 808",
+      "kind": "audio",
+      "path": "loops/808-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-808-clean-1",
+      "name": "Clean 808 Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "808",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-808-warm-2",
+      "name": "Warm 808",
+      "kind": "audio",
+      "path": "loops/808-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-808-warm-2",
+      "name": "Warm 808 Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "808",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-808-wide-3",
+      "name": "Wide 808",
+      "kind": "audio",
+      "path": "loops/808-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-808-wide-3",
+      "name": "Wide 808 Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "808",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-808-drive-4",
+      "name": "Drive 808",
+      "kind": "audio",
+      "path": "loops/808-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-808-drive-4",
+      "name": "Drive 808 Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "808",
+      "instrument": "808",
+      "genre": "Hip Hop",
+      "key": "C",
+      "bpm": 140,
+      "beats": 4,
+      "tags": [
+        "808",
+        "hip-hop",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 0.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 0.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 1.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 1.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 1.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 2.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 2.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 3.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 3.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 3.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 35,
+            "velocity": 112,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 96,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 35,
+            "velocity": 106,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 38,
+            "velocity": 102,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 4.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 4.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 5.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 5.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 5.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 6.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 6.5,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 72,
+            "channel": 10,
+            "startBeat": 7.0,
+            "durationBeats": 0.12
+          },
+          {
+            "pitch": 46,
+            "velocity": 88,
+            "channel": 10,
+            "startBeat": 7.75,
+            "durationBeats": 0.1
+          },
+          {
+            "pitch": 46,
+            "velocity": 80,
+            "channel": 10,
+            "startBeat": 7.5,
+            "durationBeats": 0.12
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-bass-clean-1",
+      "name": "Clean Bass",
+      "kind": "audio",
+      "path": "loops/bass-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-bass-clean-1",
+      "name": "Clean Bass Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "bass",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 36,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 33,
+            "velocity": 100,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 31,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-bass-warm-2",
+      "name": "Warm Bass",
+      "kind": "audio",
+      "path": "loops/bass-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-bass-warm-2",
+      "name": "Warm Bass Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "bass",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 36,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 33,
+            "velocity": 100,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 31,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-bass-wide-3",
+      "name": "Wide Bass",
+      "kind": "audio",
+      "path": "loops/bass-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-bass-wide-3",
+      "name": "Wide Bass Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "bass",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 36,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 33,
+            "velocity": 100,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 31,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-bass-drive-4",
+      "name": "Drive Bass",
+      "kind": "audio",
+      "path": "loops/bass-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-bass-drive-4",
+      "name": "Drive Bass Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "bass",
+      "instrument": "Bass",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 110,
+      "beats": 4,
+      "tags": [
+        "bass",
+        "pop",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 36,
+            "velocity": 106,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 36,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 33,
+            "velocity": 100,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 31,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.75
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-keys-clean-1",
+      "name": "Clean Keys",
+      "kind": "audio",
+      "path": "loops/keys-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-keys-clean-1",
+      "name": "Clean Keys Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "keys",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-keys-warm-2",
+      "name": "Warm Keys",
+      "kind": "audio",
+      "path": "loops/keys-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-keys-warm-2",
+      "name": "Warm Keys Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "keys",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-keys-wide-3",
+      "name": "Wide Keys",
+      "kind": "audio",
+      "path": "loops/keys-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-keys-wide-3",
+      "name": "Wide Keys Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "keys",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-keys-drive-4",
+      "name": "Drive Keys",
+      "kind": "audio",
+      "path": "loops/keys-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-keys-drive-4",
+      "name": "Drive Keys Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "keys",
+      "instrument": "Keys",
+      "genre": "Pop",
+      "key": "C",
+      "bpm": 100,
+      "beats": 8,
+      "tags": [
+        "keys",
+        "pop",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-pads-clean-1",
+      "name": "Clean Pads",
+      "kind": "audio",
+      "path": "loops/pads-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-pads-clean-1",
+      "name": "Clean Pads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pad",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-pads-warm-2",
+      "name": "Warm Pads",
+      "kind": "audio",
+      "path": "loops/pads-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-pads-warm-2",
+      "name": "Warm Pads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pad",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-pads-wide-3",
+      "name": "Wide Pads",
+      "kind": "audio",
+      "path": "loops/pads-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-pads-wide-3",
+      "name": "Wide Pads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pad",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-pads-drive-4",
+      "name": "Drive Pads",
+      "kind": "audio",
+      "path": "loops/pads-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-pads-drive-4",
+      "name": "Drive Pads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pad",
+      "instrument": "Pads",
+      "genre": "Ambient",
+      "key": "A minor",
+      "bpm": 90,
+      "beats": 8,
+      "tags": [
+        "pad",
+        "ambient",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 67,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 57,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 60,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 64,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-strings-clean-1",
+      "name": "Clean Strings",
+      "kind": "audio",
+      "path": "loops/strings-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-strings-clean-1",
+      "name": "Clean Strings Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "strings",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 55,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 62,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 52,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 55,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-strings-warm-2",
+      "name": "Warm Strings",
+      "kind": "audio",
+      "path": "loops/strings-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-strings-warm-2",
+      "name": "Warm Strings Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "strings",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 55,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 62,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 52,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 55,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-strings-wide-3",
+      "name": "Wide Strings",
+      "kind": "audio",
+      "path": "loops/strings-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-strings-wide-3",
+      "name": "Wide Strings Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "strings",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 55,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 62,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 52,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 55,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-strings-drive-4",
+      "name": "Drive Strings",
+      "kind": "audio",
+      "path": "loops/strings-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-strings-drive-4",
+      "name": "Drive Strings Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "strings",
+      "instrument": "Strings",
+      "genre": "Cinematic",
+      "key": "G minor",
+      "bpm": 84,
+      "beats": 8,
+      "tags": [
+        "strings",
+        "cinematic",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 55,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 62,
+            "velocity": 88,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 52,
+            "velocity": 90,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 55,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          },
+          {
+            "pitch": 59,
+            "velocity": 84,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 2.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-leads-clean-1",
+      "name": "Clean Leads",
+      "kind": "audio",
+      "path": "loops/leads-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-leads-clean-1",
+      "name": "Clean Leads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "synth-lead",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 74,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 76,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 79,
+            "velocity": 102,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-leads-warm-2",
+      "name": "Warm Leads",
+      "kind": "audio",
+      "path": "loops/leads-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-leads-warm-2",
+      "name": "Warm Leads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "synth-lead",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 74,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 76,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 79,
+            "velocity": 102,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-leads-wide-3",
+      "name": "Wide Leads",
+      "kind": "audio",
+      "path": "loops/leads-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-leads-wide-3",
+      "name": "Wide Leads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "synth-lead",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 74,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 76,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 79,
+            "velocity": 102,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-leads-drive-4",
+      "name": "Drive Leads",
+      "kind": "audio",
+      "path": "loops/leads-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-leads-drive-4",
+      "name": "Drive Leads Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "synth-lead",
+      "instrument": "Leads",
+      "genre": "Electronic",
+      "key": "E minor",
+      "bpm": 128,
+      "beats": 4,
+      "tags": [
+        "synth-lead",
+        "electronic",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 74,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.5
+          },
+          {
+            "pitch": 76,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.75
+          },
+          {
+            "pitch": 79,
+            "velocity": 102,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-arps-clean-1",
+      "name": "Clean Arps",
+      "kind": "audio",
+      "path": "loops/arps-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-arps-clean-1",
+      "name": "Clean Arps Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "arp",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.75,
+            "durationBeats": 0.18
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-arps-warm-2",
+      "name": "Warm Arps",
+      "kind": "audio",
+      "path": "loops/arps-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-arps-warm-2",
+      "name": "Warm Arps Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "arp",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.75,
+            "durationBeats": 0.18
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-arps-wide-3",
+      "name": "Wide Arps",
+      "kind": "audio",
+      "path": "loops/arps-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-arps-wide-3",
+      "name": "Wide Arps Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "arp",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.75,
+            "durationBeats": 0.18
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-arps-drive-4",
+      "name": "Drive Arps",
+      "kind": "audio",
+      "path": "loops/arps-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-arps-drive-4",
+      "name": "Drive Arps Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "arp",
+      "instrument": "Arps",
+      "genre": "Electronic",
+      "key": "D minor",
+      "bpm": 126,
+      "beats": 4,
+      "tags": [
+        "arp",
+        "electronic",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 0.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 1.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 2.75,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 60,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.0,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 64,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.25,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 67,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.5,
+            "durationBeats": 0.18
+          },
+          {
+            "pitch": 72,
+            "velocity": 82,
+            "channel": 1,
+            "startBeat": 3.75,
+            "durationBeats": 0.18
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-plucks-clean-1",
+      "name": "Clean Plucks",
+      "kind": "audio",
+      "path": "loops/plucks-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-plucks-clean-1",
+      "name": "Clean Plucks Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pluck",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-plucks-warm-2",
+      "name": "Warm Plucks",
+      "kind": "audio",
+      "path": "loops/plucks-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-plucks-warm-2",
+      "name": "Warm Plucks Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pluck",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-plucks-wide-3",
+      "name": "Wide Plucks",
+      "kind": "audio",
+      "path": "loops/plucks-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-plucks-wide-3",
+      "name": "Wide Plucks Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pluck",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-plucks-drive-4",
+      "name": "Drive Plucks",
+      "kind": "audio",
+      "path": "loops/plucks-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-plucks-drive-4",
+      "name": "Drive Plucks Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "pluck",
+      "instrument": "Plucks",
+      "genre": "Dance",
+      "key": "F minor",
+      "bpm": 124,
+      "beats": 4,
+      "tags": [
+        "pluck",
+        "dance",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-guitar-synth-clean-1",
+      "name": "Clean Guitar Synth",
+      "kind": "audio",
+      "path": "loops/guitar-synth-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-guitar-synth-clean-1",
+      "name": "Clean Guitar Synth Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "guitar-synth",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-guitar-synth-warm-2",
+      "name": "Warm Guitar Synth",
+      "kind": "audio",
+      "path": "loops/guitar-synth-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-guitar-synth-warm-2",
+      "name": "Warm Guitar Synth Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "guitar-synth",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-guitar-synth-wide-3",
+      "name": "Wide Guitar Synth",
+      "kind": "audio",
+      "path": "loops/guitar-synth-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-guitar-synth-wide-3",
+      "name": "Wide Guitar Synth Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "guitar-synth",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-guitar-synth-drive-4",
+      "name": "Drive Guitar Synth",
+      "kind": "audio",
+      "path": "loops/guitar-synth-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-guitar-synth-drive-4",
+      "name": "Drive Guitar Synth Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "guitar-synth",
+      "instrument": "Guitar Synth",
+      "genre": "Indie",
+      "key": "G",
+      "bpm": 112,
+      "beats": 4,
+      "tags": [
+        "guitar-synth",
+        "indie",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-sampler-clean-1",
+      "name": "Clean Sampler",
+      "kind": "audio",
+      "path": "loops/sampler-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-sampler-clean-1",
+      "name": "Clean Sampler Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-sampler-warm-2",
+      "name": "Warm Sampler",
+      "kind": "audio",
+      "path": "loops/sampler-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-sampler-warm-2",
+      "name": "Warm Sampler Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-sampler-wide-3",
+      "name": "Wide Sampler",
+      "kind": "audio",
+      "path": "loops/sampler-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-sampler-wide-3",
+      "name": "Wide Sampler Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-sampler-drive-4",
+      "name": "Drive Sampler",
+      "kind": "audio",
+      "path": "loops/sampler-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-sampler-drive-4",
+      "name": "Drive Sampler Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "Sampler",
+      "genre": "Lo Fi",
+      "key": "C minor",
+      "bpm": 92,
+      "beats": 4,
+      "tags": [
+        "sampler",
+        "lo-fi",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-fx-fills-clean-1",
+      "name": "Clean FX Fills",
+      "kind": "audio",
+      "path": "loops/fx-fills-clean-1.wav",
+      "targetTrackKind": "audio",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "clean",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-fx-fills-clean-1",
+      "name": "Clean FX Fills Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "clean",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-fx-fills-warm-2",
+      "name": "Warm FX Fills",
+      "kind": "audio",
+      "path": "loops/fx-fills-warm-2.wav",
+      "targetTrackKind": "audio",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "warm",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-fx-fills-warm-2",
+      "name": "Warm FX Fills Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "warm",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-fx-fills-wide-3",
+      "name": "Wide FX Fills",
+      "kind": "audio",
+      "path": "loops/fx-fills-wide-3.wav",
+      "targetTrackKind": "audio",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "wide",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-fx-fills-wide-3",
+      "name": "Wide FX Fills Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "wide",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "loop-audio-fx-fills-drive-4",
+      "name": "Drive FX Fills",
+      "kind": "audio",
+      "path": "loops/fx-fills-drive-4.wav",
+      "targetTrackKind": "audio",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "drive",
+        "audio",
+        "original"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge"
+    },
+    {
+      "id": "loop-midi-fx-fills-drive-4",
+      "name": "Drive FX Fills Pattern",
+      "kind": "midi",
+      "path": "",
+      "targetTrackKind": "sampler",
+      "instrument": "FX Fills",
+      "genre": "Electronic",
+      "key": "C",
+      "bpm": 128,
+      "beats": 2,
+      "tags": [
+        "sampler",
+        "electronic",
+        "drive",
+        "midi",
+        "editable"
+      ],
+      "license": "Original BandForge content; generated programmatically for this repository",
+      "attribution": "BandForge",
+      "midi": {
+        "notes": [
+          {
+            "pitch": 60,
+            "velocity": 96,
+            "channel": 1,
+            "startBeat": 0.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 64,
+            "velocity": 86,
+            "channel": 1,
+            "startBeat": 0.5,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 67,
+            "velocity": 92,
+            "channel": 1,
+            "startBeat": 1.0,
+            "durationBeats": 0.25
+          },
+          {
+            "pitch": 72,
+            "velocity": 98,
+            "channel": 1,
+            "startBeat": 1.5,
+            "durationBeats": 0.5
+          }
+        ]
+      }
+    }
+  ],
+  "presets": [
+    {
+      "id": "preset-warm-keys",
+      "name": "Warm Keys",
+      "instrumentType": "poly-synth",
+      "category": "Keyboards",
+      "tags": [
+        "soft",
+        "starter"
+      ]
+    },
+    {
+      "id": "preset-bright-lead",
+      "name": "Bright Lead",
+      "instrumentType": "lead-synth",
+      "category": "Synth Lead",
+      "tags": [
+        "lead",
+        "synth",
+        "melody"
+      ]
+    },
+    {
+      "id": "preset-round-bass",
+      "name": "Round Bass",
+      "instrumentType": "bass-synth",
+      "category": "Bass",
+      "tags": [
+        "bass",
+        "low",
+        "warm"
+      ]
+    },
+    {
+      "id": "preset-wide-pad",
+      "name": "Wide Pad",
+      "instrumentType": "pad-synth",
+      "category": "Pads",
+      "tags": [
+        "pad",
+        "ambient",
+        "wide"
+      ]
+    },
+    {
+      "id": "preset-studio-strings",
+      "name": "Studio Strings",
+      "instrumentType": "strings",
+      "category": "Strings",
+      "tags": [
+        "strings",
+        "orchestral",
+        "ensemble"
+      ]
+    },
+    {
+      "id": "preset-synth-guitar",
+      "name": "Clean Synth Guitar",
+      "instrumentType": "guitar-synth",
+      "category": "Guitar Synth",
+      "tags": [
+        "guitar",
+        "pluck",
+        "clean"
+      ]
+    },
+    {
+      "id": "preset-pulse-arp",
+      "name": "Pulse Arp",
+      "instrumentType": "arp-synth",
+      "category": "Arp",
+      "tags": [
+        "arp",
+        "sequence",
+        "pulse"
+      ]
+    },
+    {
+      "id": "preset-glass-pluck",
+      "name": "Glass Pluck",
+      "instrumentType": "pluck-synth",
+      "category": "Pluck",
+      "tags": [
+        "pluck",
+        "bell",
+        "short"
+      ]
+    },
+    {
+      "id": "preset-quick-sampler",
+      "name": "Quick Sampler",
+      "instrumentType": "sampler",
+      "category": "Sampler",
+      "tags": [
+        "sampler",
+        "sample",
+        "starter"
+      ]
+    },
+    {
+      "id": "preset-open-kit",
+      "name": "Open Kit",
+      "instrumentType": "drum-machine",
+      "category": "Drums",
+      "tags": [
+        "starter",
+        "tight"
+      ]
+    },
+    {
+      "id": "preset-punch-rack",
+      "name": "Punch Rack",
+      "instrumentType": "drum-rack",
+      "category": "Drum Rack",
+      "tags": [
+        "drums",
+        "rack",
+        "punch"
+      ]
+    },
+    {
+      "id": "preset-step-machine",
+      "name": "Step Machine",
+      "instrumentType": "beat-sequencer",
+      "category": "Beat Sequencer",
+      "tags": [
+        "drums",
+        "steps",
+        "sequencer"
+      ]
+    },
+    {
+      "id": "preset-deep-808",
+      "name": "Deep 808",
+      "instrumentType": "808",
+      "category": "808",
+      "tags": [
+        "808",
+        "sub",
+        "drums"
+      ]
+    },
+    {
+      "id": "preset-clean-vocal",
+      "name": "Clean Vocal Chain",
+      "instrumentType": "audio-effect-chain",
+      "category": "Voice",
+      "tags": [
+        "eq",
+        "compressor",
+        "reverb"
+      ]
+    }
+  ]
+}
