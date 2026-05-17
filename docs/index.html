@@ -366,6 +366,223 @@
     50% { opacity: 0.32; }
   }
   .spectrum-fill { animation: pulse-glow 3.5s ease-in-out infinite; }
+
+  /* ─── App preview ──────────────────────────────────────────────────── */
+  .preview-section {
+    padding-top: 40px;
+    padding-bottom: 90px;
+  }
+  .app-window {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.6),
+      0 0 0 1px rgba(255,255,255,0.04);
+    font-size: 12px;
+  }
+  .win-titlebar {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .win-dots { display: flex; gap: 6px; }
+  .wdot { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+  .wdot.red { background: #ff6c5e; }
+  .wdot.yel { background: #ffbd44; }
+  .wdot.grn { background: #00ca56; }
+  .win-title {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 12.5px;
+    flex: 1; text-align: center;
+    margin-right: 50px;
+  }
+
+  .app-toolbar {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .tb-group { display: flex; gap: 4px; }
+  .tb-btn {
+    padding: 5px 11px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    color: var(--text);
+    font-size: 11px; font-weight: 500;
+    line-height: 1;
+    height: 24px;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px;
+  }
+  .tb-btn.play   { background: var(--c-peak2); border-color: transparent; color: #0d1218; font-weight: 700; }
+  .tb-btn.rec    { background: var(--c-peak1); border-color: transparent; color: #fff;     font-weight: 700; }
+  .tb-btn.ghost  { color: var(--muted); }
+  .tb-btn.active { border-color: var(--accent); color: var(--accent); }
+  .tb-fill { flex: 1; }
+  .tb-status { display: flex; gap: 14px; align-items: center; color: var(--text); font-weight: 600; }
+  .tb-status .bpm { color: var(--c-lshelf); }
+  .tb-status .pos { font-family: 'JetBrains Mono', monospace; color: var(--muted); font-weight: 500; }
+  .tb-rec-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(240,64,96,0.12);
+    color: var(--c-peak1);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px; font-weight: 600;
+  }
+  .tb-rec-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-peak1); animation: rec-pulse 1.4s ease-in-out infinite; }
+  @keyframes rec-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.75); }
+  }
+
+  .app-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 380px;
+  }
+  .track-panel {
+    background: #1b2028;
+    border-right: 1px solid var(--line);
+  }
+  .panel-head {
+    padding: 14px 18px 10px;
+    color: var(--text);
+    font-weight: 700; font-size: 15px;
+    letter-spacing: -0.005em;
+  }
+  .track-row {
+    padding: 11px 14px 11px 14px;
+    display: grid;
+    grid-template-columns: 32px 1fr 30px;
+    gap: 10px;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+  }
+  .track-row.selected {
+    background: linear-gradient(90deg, rgba(80,144,255,0.18), rgba(80,144,255,0.04));
+  }
+  .track-row.selected::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+  }
+  .ticon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: grid; place-items: center;
+    background: var(--icon-bg, rgba(255,255,255,0.05));
+  }
+  .ticon svg { width: 20px; height: 20px; }
+  .tname { color: var(--text); font-weight: 600; font-size: 12.5px; line-height: 1.25; }
+  .tmeta { color: var(--muted); font-size: 10.5px; }
+  .tmeta.armed { color: var(--c-peak1); font-weight: 600; }
+  .tvu {
+    width: 4px; height: 22px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--c-peak2) 0%, var(--c-peak2) var(--lvl, 30%), rgba(255,255,255,0.06) var(--lvl, 30%), rgba(255,255,255,0.06) 100%);
+    align-self: center;
+    justify-self: end;
+    transform: scaleY(-1);
+  }
+
+  .timeline-panel {
+    background: #141a23;
+    position: relative;
+    overflow: hidden;
+  }
+  .ruler {
+    height: 28px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .ruler-tick {
+    position: absolute; top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+  .ruler-tick.major {
+    background: rgba(255,255,255,0.10);
+  }
+  .ruler-num {
+    position: absolute; top: 6px;
+    color: var(--muted);
+    font-size: 10.5px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    transform: translateX(4px);
+  }
+  .playhead {
+    position: absolute; top: 0; bottom: 0;
+    width: 1.5px;
+    background: linear-gradient(180deg, #ff6c5e 0%, rgba(255,108,94,0.6) 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .playhead::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -5px;
+    width: 0; height: 0;
+    border-left: 5.5px solid transparent;
+    border-right: 5.5px solid transparent;
+    border-top: 7px solid #ff6c5e;
+  }
+  .lane {
+    height: 55px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+  }
+  .lane-bg {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0,
+        transparent calc(12.5% - 1px),
+        rgba(255,255,255,0.04) calc(12.5% - 1px),
+        rgba(255,255,255,0.04) 12.5%);
+  }
+  .clip {
+    position: absolute;
+    top: 6px; bottom: 6px;
+    border-radius: 5px;
+    background: var(--clip-c, var(--accent));
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    color: rgba(13,18,24,0.85);
+    padding: 4px 8px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .clip svg.midi-notes { position: absolute; left: 0; right: 0; bottom: 4px; height: 18px; width: 100%; }
+  .clip svg.midi-notes rect { fill: rgba(13,18,24,0.55); }
+  .clip svg.wave { position: absolute; left: 0; right: 0; top: 50%; height: 28px; width: 100%; transform: translateY(-50%); }
+  .clip svg.wave path { fill: rgba(13,18,24,0.55); }
+  .clip.drum {
+    background: linear-gradient(180deg, var(--clip-c) 0%, var(--clip-c) 100%);
+  }
+
+  /* responsive */
+  @media (max-width: 760px) {
+    .app-body { grid-template-columns: 110px 1fr; }
+    .ticon { width: 26px; height: 26px; }
+    .ticon svg { width: 16px; height: 16px; }
+    .tname { font-size: 11.5px; }
+    .tmeta { display: none; }
+    .tvu { display: none; }
+    .app-toolbar { gap: 6px; }
+    .tb-btn { padding: 4px 7px; font-size: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -510,6 +727,227 @@
     </div>
   </div>
 </header>
+
+<section id="preview" class="preview-section">
+  <div class="section-inner">
+    <div class="eyebrow" style="text-align:center">Preview</div>
+    <h2 style="text-align:center">Everything in one window.</h2>
+    <p class="section-tag" style="text-align:center; margin: 0 auto 56px">Track list, timeline and editor panels in one resizable window — the layout you already know from Logic and GarageBand.</p>
+
+    <div class="app-window" role="img" aria-label="MaiBand application preview">
+      <!-- Title bar -->
+      <div class="win-titlebar">
+        <div class="win-dots">
+          <span class="wdot red"></span>
+          <span class="wdot yel"></span>
+          <span class="wdot grn"></span>
+        </div>
+        <div class="win-title">MaiBand &mdash; Untitled Project</div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="app-toolbar">
+        <div class="tb-group">
+          <span class="tb-btn ghost">Open</span>
+          <span class="tb-btn ghost">Save</span>
+        </div>
+        <div class="tb-group">
+          <span class="tb-btn ghost">↶</span>
+          <span class="tb-btn ghost">↷</span>
+        </div>
+        <div class="tb-group">
+          <span class="tb-btn play">▶</span>
+          <span class="tb-btn ghost">■</span>
+          <span class="tb-btn rec">●</span>
+        </div>
+        <div class="tb-group">
+          <span class="tb-btn ghost">+ MIDI</span>
+          <span class="tb-btn ghost">+ Audio</span>
+        </div>
+        <div class="tb-group">
+          <span class="tb-btn active">Cycle</span>
+          <span class="tb-btn ghost">Metro</span>
+          <span class="tb-btn ghost">Snap</span>
+        </div>
+        <div class="tb-fill"></div>
+        <div class="tb-rec-pill"><span class="dot"></span>Recording &nbsp;·&nbsp; Vocals</div>
+        <div class="tb-status">
+          <span class="bpm">120 BPM</span>
+          <span class="pos">3.2.1</span>
+        </div>
+      </div>
+
+      <!-- Main body: tracks + timeline -->
+      <div class="app-body">
+        <div class="track-panel">
+          <div class="panel-head">Tracks</div>
+
+          <!-- Lead Synth (Keys) - selected -->
+          <div class="track-row selected">
+            <div class="ticon" style="--icon-bg: rgba(80,144,255,0.18)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#5090ff" stroke-width="1.7">
+                <rect x="3" y="6"  width="4" height="12" fill="#5090ff" fill-opacity="0.35"/>
+                <rect x="8" y="6"  width="4" height="12" fill="#5090ff" fill-opacity="0.55"/>
+                <rect x="13" y="6" width="4" height="12" fill="#5090ff" fill-opacity="0.35"/>
+                <rect x="18" y="6" width="3" height="12" fill="#5090ff" fill-opacity="0.55"/>
+                <rect x="6"  y="6" width="2" height="7" fill="#0d1218"/>
+                <rect x="11" y="6" width="2" height="7" fill="#0d1218"/>
+                <rect x="16" y="6" width="2" height="7" fill="#0d1218"/>
+              </svg>
+            </div>
+            <div>
+              <div class="tname">Lead Synth</div>
+              <div class="tmeta">Keys · Poly Synth</div>
+            </div>
+            <div class="tvu" style="--lvl: 65%"></div>
+          </div>
+
+          <!-- Deep Bass -->
+          <div class="track-row">
+            <div class="ticon" style="--icon-bg: rgba(96,192,80,0.16)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#60c050" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12 Q 6 6, 9 12 T 15 12 T 21 12"/>
+              </svg>
+            </div>
+            <div>
+              <div class="tname">Deep Bass</div>
+              <div class="tmeta">Bass · Sub-Synth</div>
+            </div>
+            <div class="tvu" style="--lvl: 48%"></div>
+          </div>
+
+          <!-- Drums -->
+          <div class="track-row">
+            <div class="ticon" style="--icon-bg: rgba(255,128,48,0.14)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ff8030" stroke-width="1.8">
+                <circle cx="12" cy="12" r="7" fill="#ff8030" fill-opacity="0.18"/>
+                <circle cx="12" cy="12" r="3" fill="#ff8030"/>
+              </svg>
+            </div>
+            <div>
+              <div class="tname">Drums</div>
+              <div class="tmeta">Drum Machine</div>
+            </div>
+            <div class="tvu" style="--lvl: 80%"></div>
+          </div>
+
+          <!-- Vocals (armed) -->
+          <div class="track-row">
+            <div class="ticon" style="--icon-bg: rgba(176,96,224,0.16)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#b060e0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12 L5 12 L7 6 L11 18 L13 9 L16 14 L19 11 L22 12"/>
+              </svg>
+            </div>
+            <div>
+              <div class="tname">Vocals</div>
+              <div class="tmeta armed">● Record armed</div>
+            </div>
+            <div class="tvu" style="--lvl: 22%; background: linear-gradient(180deg, var(--c-peak1) 0%, var(--c-peak1) 22%, rgba(255,255,255,0.06) 22%, rgba(255,255,255,0.06) 100%); transform: scaleY(-1);"></div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-panel">
+          <!-- Ruler -->
+          <div class="ruler">
+            <div class="ruler-tick major" style="left: 0%"></div>
+            <div class="ruler-num"        style="left: 0%">1</div>
+            <div class="ruler-tick"       style="left: 12.5%"></div>
+            <div class="ruler-tick major" style="left: 25%"></div>
+            <div class="ruler-num"        style="left: 25%">3</div>
+            <div class="ruler-tick"       style="left: 37.5%"></div>
+            <div class="ruler-tick major" style="left: 50%"></div>
+            <div class="ruler-num"        style="left: 50%">5</div>
+            <div class="ruler-tick"       style="left: 62.5%"></div>
+            <div class="ruler-tick major" style="left: 75%"></div>
+            <div class="ruler-num"        style="left: 75%">7</div>
+            <div class="ruler-tick"       style="left: 87.5%"></div>
+          </div>
+
+          <!-- Playhead at beat 3.2.1 ≈ 27% across an 8-beat view -->
+          <div class="playhead" style="left: 27%"></div>
+
+          <!-- Lane: Lead Synth -->
+          <div class="lane" style="border-top: 1px solid rgba(80,144,255,0.18);">
+            <div class="lane-bg"></div>
+            <div class="clip" style="--clip-c: #5090ff; left: 6%; right: 76%;">
+              Chord I
+              <svg class="midi-notes" viewBox="0 0 100 18" preserveAspectRatio="none">
+                <rect x="2"  y="12" width="22" height="3"/>
+                <rect x="4"  y="6"  width="22" height="3"/>
+                <rect x="28" y="9"  width="20" height="3"/>
+                <rect x="50" y="4"  width="22" height="3"/>
+                <rect x="74" y="11" width="20" height="3"/>
+              </svg>
+            </div>
+            <div class="clip" style="--clip-c: #5090ff; left: 52%; right: 24%;">
+              Chord IV
+              <svg class="midi-notes" viewBox="0 0 100 18" preserveAspectRatio="none">
+                <rect x="2"  y="7"  width="20" height="3"/>
+                <rect x="22" y="12" width="22" height="3"/>
+                <rect x="44" y="5"  width="20" height="3"/>
+                <rect x="66" y="10" width="32" height="3"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Lane: Deep Bass -->
+          <div class="lane" style="border-top: 1px solid rgba(96,192,80,0.15);">
+            <div class="lane-bg"></div>
+            <div class="clip" style="--clip-c: #60c050; left: 10%; right: 14%;">
+              Bass groove
+              <svg class="midi-notes" viewBox="0 0 100 18" preserveAspectRatio="none">
+                <rect x="2"  y="11" width="11" height="3"/>
+                <rect x="15" y="11" width="6"  height="3"/>
+                <rect x="24" y="11" width="11" height="3"/>
+                <rect x="38" y="11" width="6"  height="3"/>
+                <rect x="48" y="11" width="11" height="3"/>
+                <rect x="62" y="11" width="6"  height="3"/>
+                <rect x="72" y="11" width="11" height="3"/>
+                <rect x="86" y="11" width="6"  height="3"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Lane: Drums (8 repeating 1-bar clips) -->
+          <div class="lane" style="border-top: 1px solid rgba(255,128,48,0.15);">
+            <div class="lane-bg"></div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 0%;   right: 87.5%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 12.5%; right: 75%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 25%; right: 62.5%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 37.5%; right: 50%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 50%; right: 37.5%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 62.5%; right: 25%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 75%; right: 12.5%;">Kit</div>
+            <div class="clip drum" style="--clip-c: #ff8030; left: 87.5%; right: 0%;">Kit</div>
+          </div>
+
+          <!-- Lane: Vocals (audio clip with waveform) -->
+          <div class="lane" style="border-top: 1px solid rgba(176,96,224,0.18);">
+            <div class="lane-bg"></div>
+            <div class="clip" style="--clip-c: #b060e0; left: 28%; right: 26%;">
+              Take 03
+              <svg class="wave" viewBox="0 0 100 28" preserveAspectRatio="none">
+                <path d="M 0,14
+                         L 2,12 L 4,15 L 6,11 L 8,16 L 10,9 L 12,18 L 14,7 L 16,20 L 18,8 L 20,17
+                         L 22,10 L 24,16 L 26,12 L 28,15 L 30,9 L 32,18 L 34,7 L 36,19 L 38,11
+                         L 40,16 L 42,9 L 44,17 L 46,12 L 48,15 L 50,8 L 52,19 L 54,10 L 56,16
+                         L 58,13 L 60,15 L 62,11 L 64,18 L 66,9 L 68,17 L 70,12 L 72,14 L 74,11
+                         L 76,15 L 78,13 L 80,14 L 82,13 L 84,14 L 86,13 L 88,14 L 90,13
+                         L 92,14 L 94,13 L 96,14 L 98,14 L 100,14
+                         L 100,14 L 98,14 L 96,14 L 94,15 L 92,14 L 90,15 L 88,14 L 86,15 L 84,14 L 82,15 L 80,14
+                         L 78,15 L 76,13 L 74,17 L 72,14 L 70,16 L 68,11 L 66,19 L 64,10 L 62,17 L 60,13
+                         L 58,15 L 56,12 L 54,18 L 52,9 L 50,20 L 48,13 L 46,16 L 44,11 L 42,19 L 40,12
+                         L 38,17 L 36,9 L 34,21 L 32,10 L 30,19 L 28,12 L 26,16 L 24,12 L 22,18 L 20,11
+                         L 18,20 L 16,8 L 14,21 L 12,10 L 10,19 L 8,12 L 6,17 L 4,13 L 2,16 L 0,14 Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="features">
   <div class="section-inner">
