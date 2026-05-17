@@ -5279,6 +5279,72 @@
       ]
     },
     {
+      "id": "preset-glass-ep",
+      "name": "Glass EP",
+      "instrumentType": "electric-piano",
+      "category": "Keyboards",
+      "tags": [
+        "keys",
+        "electric",
+        "bell"
+      ]
+    },
+    {
+      "id": "preset-drawbar-organ",
+      "name": "Drawbar Organ",
+      "instrumentType": "organ",
+      "category": "Keyboards",
+      "tags": [
+        "organ",
+        "sustain",
+        "retro"
+      ]
+    },
+    {
+      "id": "preset-section-brass",
+      "name": "Section Brass",
+      "instrumentType": "brass",
+      "category": "Brass",
+      "tags": [
+        "brass",
+        "stabs",
+        "bold"
+      ]
+    },
+    {
+      "id": "preset-soft-choir",
+      "name": "Soft Choir",
+      "instrumentType": "choir",
+      "category": "Choir",
+      "tags": [
+        "choir",
+        "pad",
+        "human"
+      ]
+    },
+    {
+      "id": "preset-bright-mallet",
+      "name": "Bright Mallet",
+      "instrumentType": "mallet",
+      "category": "Mallet",
+      "tags": [
+        "mallet",
+        "bell",
+        "percussion"
+      ]
+    },
+    {
+      "id": "preset-warm-woodwind",
+      "name": "Warm Woodwind",
+      "instrumentType": "woodwind",
+      "category": "Woodwind",
+      "tags": [
+        "woodwind",
+        "lead",
+        "breath"
+      ]
+    },
+    {
       "id": "preset-studio-strings",
       "name": "Studio Strings",
       "instrumentType": "strings",

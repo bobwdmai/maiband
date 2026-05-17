@@ -202,11 +202,41 @@ float audioSampleAt(const AudioEngine::CachedAudioClip& clip, double seconds, in
 // Window = 2048 frames, 4x overlap — good trade-off of quality vs. latency.
 AudioEngine::CachedAudioClip olaStretch(const AudioEngine::CachedAudioClip& src, double ratio)
 {
+    if (!std::isfinite(ratio) || ratio <= 0.0 || src.sampleRate <= 0 || src.channels <= 0 || src.samples.empty()) {
+        return {};
+    }
+
     constexpr int kWindow = 2048;
-    const int hopOut = kWindow / 4;
-    const int hopIn  = std::max(1, static_cast<int>(std::round(static_cast<double>(hopOut) / ratio)));
     const int ch = src.channels;
     const auto srcFrames = static_cast<int64_t>(src.samples.size() / static_cast<std::size_t>(ch));
+    if (srcFrames <= 0) {
+        return {};
+    }
+
+    if (srcFrames < kWindow) {
+        AudioEngine::CachedAudioClip out;
+        out.sampleRate = src.sampleRate;
+        out.channels = ch;
+        const auto dstFrames = std::max<int64_t>(1, static_cast<int64_t>(std::ceil(static_cast<double>(srcFrames) * ratio)));
+        out.samples.assign(static_cast<std::size_t>(dstFrames * ch), 0.0f);
+
+        for (int64_t frame = 0; frame < dstFrames; ++frame) {
+            const double sourceFrame = std::min(static_cast<double>(srcFrames - 1), static_cast<double>(frame) / ratio);
+            const auto f0 = static_cast<int64_t>(sourceFrame);
+            const auto f1 = std::min<int64_t>(srcFrames - 1, f0 + 1);
+            const auto frac = static_cast<float>(sourceFrame - static_cast<double>(f0));
+            for (int c = 0; c < ch; ++c) {
+                const auto i0 = static_cast<std::size_t>(f0 * ch + c);
+                const auto i1 = static_cast<std::size_t>(f1 * ch + c);
+                out.samples[static_cast<std::size_t>(frame * ch + c)] =
+                    src.samples[i0] + (src.samples[i1] - src.samples[i0]) * frac;
+            }
+        }
+        return out;
+    }
+
+    const int hopOut = kWindow / 4;
+    const int hopIn  = std::max(1, static_cast<int>(std::round(static_cast<double>(hopOut) / ratio)));
     const auto dstFrames = static_cast<int64_t>(std::ceil(static_cast<double>(srcFrames) * ratio)) + kWindow;
 
     AudioEngine::CachedAudioClip out;
@@ -282,7 +312,7 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
             return static_cast<float>((body * decay + noise * noiseDecay) * velocity * 0.45f);
         }
         // Hi-hat: high-frequency noise with short decay
-        const bool isOpen = note.pitch >= 46 && (note.pitch == 46 || note.pitch >= 49);
+        const bool isOpen = note.pitch == 46 || note.pitch >= 49;
         const double decayRate = isOpen ? 9.0 : 38.0;
         const double decay = std::exp(-noteSeconds * decayRate);
         const double noiseSeed = absoluteSeconds * 44100.0;
@@ -292,8 +322,17 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
     }
 
     // Attack/release envelope
-    const double attackTime = (kind == TrackKind::Pad || kind == TrackKind::Strings) ? 0.08 : 0.008;
-    const double releaseDecay = (kind == TrackKind::Keys || kind == TrackKind::Pluck || kind == TrackKind::GuitarSynth) ? 0.12 : 0.06;
+    const double attackTime =
+        (kind == TrackKind::Choir) ? 0.16 :
+        (kind == TrackKind::Pad || kind == TrackKind::Strings || kind == TrackKind::Brass) ? 0.08 :
+        (kind == TrackKind::Woodwind) ? 0.025 :
+        0.008;
+    const double releaseDecay =
+        (kind == TrackKind::Choir || kind == TrackKind::Pad) ? 0.18 :
+        (kind == TrackKind::Keys || kind == TrackKind::ElectricPiano
+            || kind == TrackKind::Pluck || kind == TrackKind::GuitarSynth
+            || kind == TrackKind::Mallet || kind == TrackKind::Woodwind) ? 0.12 :
+        0.06;
     const double attack = std::min(noteSeconds / attackTime, 1.0);
     const double release = std::clamp(releaseTime / releaseDecay, 0.0, 1.0);
     const double envelope = attack * release;
@@ -301,7 +340,7 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
     int pitch = note.pitch;
     if (kind == TrackKind::Bass || kind == TrackKind::EightOhEight) {
         pitch -= 12;
-    } else if (kind == TrackKind::SynthLead) {
+    } else if (kind == TrackKind::SynthLead || kind == TrackKind::Woodwind) {
         pitch += 12;
     }
     const double freq = midiNoteToFrequency(pitch);
@@ -323,6 +362,21 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
         const double f3 = (0.2 + 0.3 * brightness) * std::sin(2.0 * Pi * freq * 3.0 * absoluteSeconds);
         return static_cast<float>((f1 + f2 + f3) * envelope * velocity * 0.11f);
     }
+    case TrackKind::ElectricPiano: {
+        const double bell = std::exp(-noteSeconds * 2.4);
+        const double body = std::sin(2.0 * Pi * freq * absoluteSeconds);
+        const double tine = std::sin(2.0 * Pi * freq * 2.01 * absoluteSeconds) * 0.38 * bell;
+        const double chime = std::sin(2.0 * Pi * freq * 3.98 * absoluteSeconds) * 0.20 * bell;
+        return static_cast<float>((body + tine + chime) * envelope * velocity * 0.12f);
+    }
+    case TrackKind::Organ: {
+        const double rotary = 1.0 + 0.08 * std::sin(2.0 * Pi * 5.6 * absoluteSeconds);
+        const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
+        const double f2 = 0.52 * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
+        const double f3 = 0.32 * std::sin(2.0 * Pi * freq * 3.0 * absoluteSeconds);
+        const double f4 = 0.18 * std::sin(2.0 * Pi * freq * 4.0 * absoluteSeconds);
+        return static_cast<float>((f1 + f2 + f3 + f4) * rotary * envelope * velocity * 0.09f);
+    }
     case TrackKind::SynthLead: {
         // Buzzy lead: square-ish wave (odd harmonics)
         const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
@@ -331,14 +385,23 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
         const double f7 = 0.14 * std::sin(2.0 * Pi * freq * 7.0 * absoluteSeconds);
         return static_cast<float>((f1 + f3 + f5 + f7) * envelope * velocity * 0.11f);
     }
+    case TrackKind::Brass: {
+        const double swell = std::min(noteSeconds / 0.18, 1.0);
+        const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
+        const double f2 = 0.55 * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
+        const double f3 = 0.35 * std::sin(2.0 * Pi * freq * 3.0 * absoluteSeconds);
+        const double buzz = 0.18 * std::sin(2.0 * Pi * freq * 5.0 * absoluteSeconds);
+        return static_cast<float>((f1 + f2 + f3 + buzz) * envelope * swell * velocity * 0.11f);
+    }
     case TrackKind::Pad:
+    case TrackKind::Choir:
     case TrackKind::Strings: {
         // Lush pad: slow-attack chorus of detuned oscillators
-        const double detune = kind == TrackKind::Strings ? 0.007 : 0.004;
+        const double detune = kind == TrackKind::Strings ? 0.007 : (kind == TrackKind::Choir ? 0.003 : 0.004);
         const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
         const double f2 = std::sin(2.0 * Pi * freq * (1.0 + detune) * absoluteSeconds);
         const double f3 = std::sin(2.0 * Pi * freq * (1.0 - detune) * absoluteSeconds);
-        const double f4 = 0.3 * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
+        const double f4 = (kind == TrackKind::Choir ? 0.18 : 0.3) * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
         return static_cast<float>(((f1 + f2 + f3) / 3.0 + f4) * envelope * velocity * 0.09f);
     }
     case TrackKind::GuitarSynth:
@@ -349,6 +412,21 @@ float midiSampleAt(const MidiNote& note, double absoluteSeconds, double noteLoca
         const double f2 = 0.6 * pluckDecay * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
         const double f3 = 0.3 * pluckDecay * std::sin(2.0 * Pi * freq * 3.0 * absoluteSeconds);
         return static_cast<float>((f1 + f2 + f3) * pluckDecay * velocity * 0.13f);
+    }
+    case TrackKind::Mallet: {
+        const double hitDecay = std::exp(-noteSeconds * 4.8);
+        const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
+        const double f2 = 0.55 * std::sin(2.0 * Pi * freq * 2.98 * absoluteSeconds);
+        const double f3 = 0.26 * std::sin(2.0 * Pi * freq * 5.02 * absoluteSeconds);
+        return static_cast<float>((f1 + f2 + f3) * hitDecay * velocity * 0.13f);
+    }
+    case TrackKind::Woodwind: {
+        const double f1 = std::sin(2.0 * Pi * freq * absoluteSeconds);
+        const double f2 = 0.24 * std::sin(2.0 * Pi * freq * 2.0 * absoluteSeconds);
+        const double vibrato = 1.0 + 0.035 * std::sin(2.0 * Pi * 5.0 * absoluteSeconds);
+        const double noiseSeed = absoluteSeconds * 44100.0;
+        const double breath = 0.05 * std::sin(noiseSeed * 31.7 + std::sin(noiseSeed * 113.1) * 5.0);
+        return static_cast<float>((f1 + f2 + breath) * vibrato * envelope * velocity * 0.10f);
     }
     case TrackKind::Arp: {
         // Arp: thin, slightly detuned square with short attack
@@ -386,7 +464,263 @@ static float liveSampleAt(const AudioEngine::LiveNote& ln, double absoluteSecond
     return midiSampleAt(note, absoluteSeconds, ln.ageSeconds * kBeatsPerSec, kRefBpm, ln.kind);
 }
 
+// ── Parametric EQ (RBJ cookbook biquad filters) ────────────────────────────
+
+struct BiquadCoeffs { double b0=1,b1=0,b2=0,a1=0,a2=0; };
+
+static BiquadCoeffs computeEqBand(double freq, double gainDb, double q, int type, double sr)
+{
+    freq = std::clamp(freq, 10.0, sr * 0.49);
+    q    = std::max(0.05, q);
+    const double w0    = 2.0 * Pi * freq / sr;
+    const double cosw0 = std::cos(w0);
+    const double sinw0 = std::sin(w0);
+    const double alpha = sinw0 / (2.0 * q);
+    const double A     = std::pow(10.0, gainDb / 40.0);
+
+    BiquadCoeffs c;
+    double a0 = 1.0;
+    switch (type) {
+    case 0: // High-pass
+        c.b0 = (1.0 + cosw0) / 2.0;
+        c.b1 = -(1.0 + cosw0);
+        c.b2 = (1.0 + cosw0) / 2.0;
+        a0   = 1.0 + alpha;
+        c.a1 = -2.0 * cosw0;
+        c.a2 = 1.0 - alpha;
+        break;
+    case 1: { // Low shelf
+        const double sqrtA = std::sqrt(A);
+        const double alphaSh = sinw0 / 2.0 * std::sqrt((A + 1.0/A) * (1.0/1.0 - 1.0) + 2.0);
+        c.b0 =     A * ((A+1) - (A-1)*cosw0 + 2.0*sqrtA*alphaSh);
+        c.b1 = 2.0*A * ((A-1) - (A+1)*cosw0);
+        c.b2 =     A * ((A+1) - (A-1)*cosw0 - 2.0*sqrtA*alphaSh);
+        a0   =         (A+1) + (A-1)*cosw0 + 2.0*sqrtA*alphaSh;
+        c.a1 =    -2.0*((A-1) + (A+1)*cosw0);
+        c.a2 =         (A+1) + (A-1)*cosw0 - 2.0*sqrtA*alphaSh;
+        break;
+    }
+    case 2: // Peak
+        c.b0 = 1.0 + alpha * A;
+        c.b1 = -2.0 * cosw0;
+        c.b2 = 1.0 - alpha * A;
+        a0   = 1.0 + alpha / A;
+        c.a1 = -2.0 * cosw0;
+        c.a2 = 1.0 - alpha / A;
+        break;
+    case 3: { // High shelf
+        const double sqrtA = std::sqrt(A);
+        const double alphaSh = sinw0 / 2.0 * std::sqrt((A + 1.0/A) * (1.0/1.0 - 1.0) + 2.0);
+        c.b0 =     A * ((A+1) + (A-1)*cosw0 + 2.0*sqrtA*alphaSh);
+        c.b1 =-2.0*A * ((A-1) + (A+1)*cosw0);
+        c.b2 =     A * ((A+1) + (A-1)*cosw0 - 2.0*sqrtA*alphaSh);
+        a0   =         (A+1) - (A-1)*cosw0 + 2.0*sqrtA*alphaSh;
+        c.a1 =     2.0*((A-1) - (A+1)*cosw0);
+        c.a2 =         (A+1) - (A-1)*cosw0 - 2.0*sqrtA*alphaSh;
+        break;
+    }
+    case 4: // Low-pass
+    default:
+        c.b0 = (1.0 - cosw0) / 2.0;
+        c.b1 =  1.0 - cosw0;
+        c.b2 = (1.0 - cosw0) / 2.0;
+        a0   = 1.0 + alpha;
+        c.a1 = -2.0 * cosw0;
+        c.a2 = 1.0 - alpha;
+        break;
+    }
+    const double inv = 1.0 / a0;
+    c.b0 *= inv; c.b1 *= inv; c.b2 *= inv;
+    c.a1 *= inv; c.a2 *= inv;
+    return c;
+}
+
+static double applyBiquad(double x, const BiquadCoeffs& c, AudioEngine::BiquadState& s)
+{
+    const double y = c.b0*x + c.b1*s.x1 + c.b2*s.x2 - c.a1*s.y1 - c.a2*s.y2;
+    s.x2=s.x1; s.x1=x; s.y2=s.y1; s.y1=y;
+    return y;
+}
+
+// Apply all active EQ bands for one track sample on the given channel.
+// 8-band Logic-style channel EQ:
+//   b0 = HPF, b1 = Low Shelf, b2..b5 = Peaks, b6 = High Shelf, b7 = LPF
+static double applyTrackEq(double sample, int ch, TrackId trackId, const Track& track,
+                           double sr, std::map<TrackId, std::array<AudioEngine::BiquadState, 16>>& state)
+{
+    static constexpr double kDefaultFreq[8] = { 30.0, 80.0, 200.0, 800.0, 2500.0, 6000.0, 10000.0, 18000.0 };
+    static constexpr int    kDefaultType[8] = { 0, 1, 2, 2, 2, 2, 3, 4 };
+
+    for (const auto& fx : track.mixer.effects) {
+        if (fx.type != "eq") continue;
+        auto& bands = state[trackId];
+        for (int b = 0; b < 8; ++b) {
+            const auto pf = [&](const std::string& k, double def) {
+                const auto it = fx.parameters.find("b" + std::to_string(b) + "." + k);
+                return it != fx.parameters.end() ? it->second : def;
+            };
+            // Default inactive — only bands explicitly enabled by the UI run.
+            if (pf("active", 0.0) < 0.5) continue;
+            const double freq = pf("freq", kDefaultFreq[b]);
+            const double gain = pf("gain", 0.0);
+            const double q    = pf("q",    0.707);
+            const int    type = static_cast<int>(pf("type", static_cast<double>(kDefaultType[b])));
+            const auto coeffs = computeEqBand(freq, gain, q, type, sr);
+            sample = applyBiquad(sample, coeffs, bands[static_cast<std::size_t>(b * 2 + ch)]);
+        }
+        break; // only one EQ slot per track
+    }
+    return sample;
+}
+
+// Per-track insert effects applied after EQ. Operates on one channel sample;
+// state writes advance once per stereo frame (caller signals via `isLastChannel`).
+static double applyTrackFx(double sample, int ch, bool isLastChannel,
+                           TrackId trackId, const Track& track, double sr,
+                           std::map<TrackId, AudioEngine::TrackFxState>& fxStateMap)
+{
+    AudioEngine::TrackFxState* state = nullptr;
+
+    const auto get = [&]() -> AudioEngine::TrackFxState& {
+        if (state == nullptr) state = &fxStateMap[trackId];
+        return *state;
+    };
+
+    const auto param = [](const EffectSlot& fx, const char* key, double def) {
+        const auto it = fx.parameters.find(key);
+        return it != fx.parameters.end() ? it->second : def;
+    };
+
+    for (const auto& fx : track.mixer.effects) {
+        if (fx.type == "eq") continue; // already applied
+
+        if (fx.type == "echo") {
+            const double timeSec  = std::clamp(param(fx, "timeSec",  0.32), 0.02,  2.0);
+            const double feedback = std::clamp(param(fx, "feedback", 0.35), 0.0,   0.95);
+            const double mix      = std::clamp(param(fx, "mix",      0.35), 0.0,   1.0);
+            auto& s = get();
+            if (!s.echoReady) {
+                const std::size_t cap = static_cast<std::size_t>(std::ceil(sr * 2.0)) + 16;
+                for (auto& b : s.echoBuf) b.assign(cap, 0.0f);
+                s.echoWritePos = 0;
+                s.echoReady = true;
+            }
+            const std::size_t cap = s.echoBuf[0].size();
+            const std::size_t chIdx = static_cast<std::size_t>(std::min(ch, 1));
+            const int delaySamples = std::clamp(static_cast<int>(timeSec * sr), 1, static_cast<int>(cap - 1));
+            int readPos = s.echoWritePos - delaySamples;
+            if (readPos < 0) readPos += static_cast<int>(cap);
+            const float delayed = s.echoBuf[chIdx][static_cast<std::size_t>(readPos)];
+            s.echoBuf[chIdx][static_cast<std::size_t>(s.echoWritePos)] =
+                static_cast<float>(sample + delayed * feedback);
+            sample = sample * (1.0 - mix) + static_cast<double>(delayed) * mix;
+            if (isLastChannel) s.echoWritePos = (s.echoWritePos + 1) % static_cast<int>(cap);
+        }
+        else if (fx.type == "distortion") {
+            const double drive = std::clamp(param(fx, "drive", 6.0),  1.0, 40.0);
+            const double mix   = std::clamp(param(fx, "mix",   1.0),  0.0, 1.0);
+            const double wet   = std::tanh(sample * drive) / std::tanh(drive);
+            sample = sample * (1.0 - mix) + wet * mix;
+        }
+        else if (fx.type == "telephone" || fx.type == "megaphone") {
+            const bool mega = (fx.type == "megaphone");
+            const double mix   = std::clamp(param(fx, "mix",   1.0), 0.0, 1.0);
+            const double drive = std::clamp(param(fx, "drive", mega ? 8.0 : 1.0), 1.0, 30.0);
+            const double hpFreq = mega ? 500.0  : 350.0;
+            const double lpFreq = mega ? 2500.0 : 3000.0;
+            auto& s = get();
+            const std::size_t chIdx = static_cast<std::size_t>(std::min(ch, 1));
+            const auto hp = computeEqBand(hpFreq, 0.0, 0.707, 0, sr);
+            const auto lp = computeEqBand(lpFreq, 0.0, 0.707, 4, sr);
+            double wet = applyBiquad(sample, hp, s.bandHp[chIdx]);
+            wet = applyBiquad(wet, lp, s.bandLp[chIdx]);
+            if (mega) wet = std::tanh(wet * drive) * 0.7;
+            sample = sample * (1.0 - mix) + wet * mix;
+        }
+        else if (fx.type == "reverb") {
+            // Schroeder reverb: 4 parallel combs + 2 series allpass per channel.
+            const double sizeP = std::clamp(param(fx, "size", 0.7),  0.1, 0.95);
+            const double damp  = std::clamp(param(fx, "damp", 0.45), 0.0, 1.0);
+            const double mix   = std::clamp(param(fx, "mix",  0.3),  0.0, 1.0);
+            auto& s = get();
+            if (!s.reverbReady) {
+                static constexpr int combLens[4] = { 1116, 1188, 1277, 1356 };
+                static constexpr int apLens[2]   = { 225, 556 };
+                const double scale = sr / 44100.0;
+                for (int c = 0; c < 2; ++c) {
+                    for (int i = 0; i < 4; ++i) {
+                        const std::size_t len = static_cast<std::size_t>(std::lround(combLens[i] * scale)) + (c == 1 ? 23u : 0u);
+                        s.combBuf[static_cast<std::size_t>(c)][static_cast<std::size_t>(i)].assign(len, 0.0f);
+                        s.combPos[static_cast<std::size_t>(c)][static_cast<std::size_t>(i)] = 0;
+                        s.combHist[static_cast<std::size_t>(c)][static_cast<std::size_t>(i)] = 0.0f;
+                    }
+                    for (int i = 0; i < 2; ++i) {
+                        const std::size_t len = static_cast<std::size_t>(std::lround(apLens[i] * scale)) + (c == 1 ? 23u : 0u);
+                        s.apBuf[static_cast<std::size_t>(c)][static_cast<std::size_t>(i)].assign(len, 0.0f);
+                        s.apPos[static_cast<std::size_t>(c)][static_cast<std::size_t>(i)] = 0;
+                    }
+                }
+                s.reverbReady = true;
+            }
+            const std::size_t chIdx = static_cast<std::size_t>(std::min(ch, 1));
+            const double feedback = sizeP * 0.95;
+            const double dampC = damp;
+            double out = 0.0;
+            // Combs in parallel
+            for (int i = 0; i < 4; ++i) {
+                auto& buf = s.combBuf[chIdx][static_cast<std::size_t>(i)];
+                auto& pos = s.combPos[chIdx][static_cast<std::size_t>(i)];
+                auto& hist = s.combHist[chIdx][static_cast<std::size_t>(i)];
+                const float y = buf[static_cast<std::size_t>(pos)];
+                hist = static_cast<float>(y * (1.0 - dampC) + hist * dampC);
+                buf[static_cast<std::size_t>(pos)] = static_cast<float>(sample + hist * feedback);
+                out += static_cast<double>(y);
+                pos = (pos + 1) % static_cast<int>(buf.size());
+            }
+            // Allpass in series
+            for (int i = 0; i < 2; ++i) {
+                auto& buf = s.apBuf[chIdx][static_cast<std::size_t>(i)];
+                auto& pos = s.apPos[chIdx][static_cast<std::size_t>(i)];
+                const float bufVal = buf[static_cast<std::size_t>(pos)];
+                const double in = out;
+                out = -in + static_cast<double>(bufVal);
+                buf[static_cast<std::size_t>(pos)] = static_cast<float>(in + bufVal * 0.5);
+                pos = (pos + 1) % static_cast<int>(buf.size());
+            }
+            sample = sample * (1.0 - mix) + (out * 0.25) * mix;
+        }
+    }
+    return sample;
+}
+
 } // namespace
+
+void AudioEngine::resetEqState(TrackId id) const
+{
+    std::lock_guard lock(eqMutex_);
+    eqState_.erase(id);
+}
+
+void AudioEngine::resetTrackFx(TrackId id) const
+{
+    std::lock_guard lock(fxMutex_);
+    fxState_.erase(id);
+}
+
+AudioEngine::~AudioEngine()
+{
+    std::vector<std::thread> workers;
+    {
+        std::lock_guard lock(stretchThreadsMutex_);
+        workers.swap(stretchThreads_);
+    }
+
+    for (auto& worker : workers) {
+        if (worker.joinable()) {
+            worker.join();
+        }
+    }
+}
 
 void AudioEngine::prepare(AudioEngineConfig config)
 {
@@ -404,14 +738,23 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
     }
 
     const auto frameCount = interleavedOutput.size() / static_cast<std::size_t>(config_.channels);
+    if (frameCount == 0) return;
     const bool soloed = anySoloed(project);
     TempoMap tempoMap(project);
     const double startSeconds = tempoMap.beatToSeconds(startBeat);
+    // Compute beats per second once at block boundary and use linear interpolation
+    // within the block. Valid because a ~10ms block is tiny compared to any tempo segment.
+    const double endSeconds = startSeconds + static_cast<double>(frameCount) / config_.sampleRate;
+    const double endBeat = tempoMap.secondsToBeat(endSeconds);
+    const double beatsPerFrame = (endBeat - startBeat) / static_cast<double>(frameCount);
+    const double bpm = project.bpmAt(startBeat);
     std::vector<float> mixedFrame(static_cast<std::size_t>(config_.channels), 0.0f);
+    std::lock_guard<std::mutex> eqLock(eqMutex_);
+    std::lock_guard<std::mutex> fxLock(fxMutex_);
 
     for (std::size_t frame = 0; frame < frameCount; ++frame) {
         const double absoluteSeconds = startSeconds + (static_cast<double>(frame) / config_.sampleRate);
-        const double beat = tempoMap.secondsToBeat(absoluteSeconds);
+        const double beat = startBeat + static_cast<double>(frame) * beatsPerFrame;
         std::fill(mixedFrame.begin(), mixedFrame.end(), 0.0f);
 
         for (const auto& track : project.tracks) {
@@ -436,13 +779,15 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
                     const double localBeat = beat - clip.startBeat;
                     for (const auto& note : clip.midi.notes) {
                         if (localBeat >= note.startBeat && localBeat < note.startBeat + note.durationBeats) {
-                            trackSample += midiSampleAt(note, absoluteSeconds, localBeat - note.startBeat, project.bpmAt(beat), track.kind);
+                            trackSample += midiSampleAt(note, absoluteSeconds, localBeat - note.startBeat, bpm, track.kind);
                         }
                     }
                 }
 
                 for (int ch = 0; ch < config_.channels; ++ch) {
-                    mixedFrame[static_cast<std::size_t>(ch)] += trackSample * chanGain(ch);
+                    double s = applyTrackEq(static_cast<double>(trackSample), ch, track.id, track, config_.sampleRate, eqState_);
+                    s = applyTrackFx(s, ch, ch == config_.channels - 1, track.id, track, config_.sampleRate, fxState_);
+                    mixedFrame[static_cast<std::size_t>(ch)] += static_cast<float>(s) * chanGain(ch);
                 }
                 continue;
             }
@@ -483,8 +828,13 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
 
                 const auto clipGain = static_cast<float>(mixer::dbToLinear(clip.audio.gainDb));
                 for (int channel = 0; channel < config_.channels; ++channel) {
+                    double s = applyTrackEq(
+                        audioSampleAt(*audio, sourceSeconds, channel),
+                        channel, track.id, track, config_.sampleRate, eqState_);
+                    s = applyTrackFx(s, channel, channel == config_.channels - 1,
+                        track.id, track, config_.sampleRate, fxState_);
                     mixedFrame[static_cast<std::size_t>(channel)] +=
-                        audioSampleAt(*audio, sourceSeconds, channel) * chanGain(channel) * clipGain;
+                        static_cast<float>(s) * chanGain(channel) * clipGain;
                 }
             }
         }
@@ -493,7 +843,30 @@ void AudioEngine::renderPreview(const Project& project, double startBeat, std::s
             interleavedOutput[(frame * static_cast<std::size_t>(config_.channels)) + static_cast<std::size_t>(channel)] =
                 std::clamp(mixedFrame[static_cast<std::size_t>(channel)], -1.0f, 1.0f);
         }
+
+        // Push mono mix into the analyzer ring buffer (SPSC).
+        float mono = 0.0f;
+        for (int channel = 0; channel < config_.channels; ++channel) {
+            mono += mixedFrame[static_cast<std::size_t>(channel)];
+        }
+        if (config_.channels > 1) mono /= static_cast<float>(config_.channels);
+        const std::size_t wi = recentWriteIdx_.load(std::memory_order_relaxed);
+        recentBuffer_[wi & (kRecentBufferSize - 1)] = std::clamp(mono, -1.0f, 1.0f);
+        recentWriteIdx_.store(wi + 1, std::memory_order_release);
     }
+}
+
+std::size_t AudioEngine::peekRecentOutput(std::span<float> dst) const noexcept
+{
+    const std::size_t n = std::min(dst.size(), kRecentBufferSize);
+    if (n == 0) return 0;
+    const std::size_t wi = recentWriteIdx_.load(std::memory_order_acquire);
+    if (wi < n) return 0;
+    const std::size_t start = wi - n;
+    for (std::size_t i = 0; i < n; ++i) {
+        dst[i] = recentBuffer_[(start + i) & (kRecentBufferSize - 1)];
+    }
+    return n;
 }
 
 AudioEngineConfig AudioEngine::config() const noexcept
@@ -594,6 +967,10 @@ const AudioEngine::CachedAudioClip& AudioEngine::audioForPath(const std::string&
 
 void AudioEngine::requestStretch(const std::string& mediaPath, double stretchRatio) const
 {
+    if (!std::isfinite(stretchRatio) || stretchRatio <= 0.0 || mediaPath.empty()) {
+        return;
+    }
+
     const int ratioKey = static_cast<int>(std::round(stretchRatio * 1000.0));
     const auto key = std::make_pair(mediaPath, ratioKey);
 
@@ -607,15 +984,18 @@ void AudioEngine::requestStretch(const std::string& mediaPath, double stretchRat
     // Capture by value so the thread owns everything it needs
     const std::string path = mediaPath;
     const double ratio = stretchRatio;
-    std::thread([this, path, ratio, key]() {
+    std::thread worker([this, path, ratio, key]() {
         const auto& src = audioForPath(path);
-        auto stretched = (std::abs(ratio - 1.0) < 0.005)
-            ? src
-            : olaStretch(src, ratio);
+        auto stretched = (src.sampleRate <= 0 || src.channels <= 0 || src.samples.empty())
+            ? AudioEngine::CachedAudioClip {}
+            : ((std::abs(ratio - 1.0) < 0.005) ? src : olaStretch(src, ratio));
         std::lock_guard lock(stretchMutex_);
         stretchCache_.emplace(key, std::move(stretched));
         stretchPending_.erase(key);
-    }).detach();
+    });
+
+    std::lock_guard lock(stretchThreadsMutex_);
+    stretchThreads_.push_back(std::move(worker));
 }
 
 const AudioEngine::CachedAudioClip* AudioEngine::stretchedClipIfReady(

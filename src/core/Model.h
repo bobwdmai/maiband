@@ -131,6 +131,7 @@ class Project {
 public:
     static constexpr const char* CurrentSchemaVersion = "1.0";
     static constexpr const char* ProjectFileName = "project.json";
+    static constexpr const char* ProjectFileExtension = ".bforge";
 
     std::string schemaVersion = CurrentSchemaVersion;
     std::string appVersion = "0.1.0";
@@ -148,6 +149,7 @@ public:
     [[nodiscard]] const Clip* findClip(TrackId trackId, ClipId clipId) const;
 
     Track& addTrack(TrackKind kind, std::string name);
+    bool   removeTrack(TrackId id);
     Clip& addAudioClip(TrackId trackId, std::string name, std::string mediaPath, double startBeat, double lengthBeats);
     Clip& addMidiClip(TrackId trackId, std::string name, double startBeat, double lengthBeats);
 
@@ -156,6 +158,9 @@ public:
 
     [[nodiscard]] JsonValue toJson() const;
     static Project fromJson(const JsonValue& json);
+
+    void saveFile(const std::filesystem::path& projectFile) const;
+    static Project loadFile(const std::filesystem::path& projectFile);
 
     void saveBundle(const std::filesystem::path& bundleDirectory) const;
     static Project loadBundle(const std::filesystem::path& bundleDirectory);

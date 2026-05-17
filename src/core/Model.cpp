@@ -1,6 +1,7 @@
 #include "core/Model.h"
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iterator>
 #include <stdexcept>
@@ -99,9 +100,10 @@ JsonValue tempoMarkerToJson(const TempoMarker& marker)
 
 TempoMarker tempoMarkerFromJson(const JsonValue& json)
 {
+    const double bpm = readNumber(json, "bpm", 120.0);
     return {
         readNumber(json, "beat", 0.0),
-        readNumber(json, "bpm", 120.0),
+        (std::isfinite(bpm) && bpm > 0.0) ? bpm : 120.0,
     };
 }
 
@@ -432,11 +434,20 @@ Track trackFromJson(const JsonValue& json)
     return track;
 }
 
+static std::string sanitisePath(const std::filesystem::path& path)
+{
+    std::string s = path.string();
+    s.erase(std::remove_if(s.begin(), s.end(),
+                           [](unsigned char c) { return c < 0x20 || c == 0x7f; }),
+            s.end());
+    return s;
+}
+
 std::string readTextFile(const std::filesystem::path& path)
 {
     std::ifstream input(path);
     if (!input) {
-        throw std::runtime_error("Could not open " + path.string());
+        throw std::runtime_error("Could not open " + sanitisePath(path));
     }
     return { std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>() };
 }
@@ -445,7 +456,7 @@ void writeTextFile(const std::filesystem::path& path, const std::string& content
 {
     std::ofstream output(path, std::ios::binary);
     if (!output) {
-        throw std::runtime_error("Could not write " + path.string());
+        throw std::runtime_error("Could not write " + sanitisePath(path));
     }
     output << content;
 }
@@ -585,6 +596,18 @@ TrackDefaults defaultsForTrackKind(TrackKind kind)
         return { "#43A66F", "#43A66F", "bass-synth", "Round Bass", { { "attack", 0.01 }, { "release", 0.18 }, { "tone", 0.38 }, { "sub", 0.72 } }, {} };
     case TrackKind::Pad:
         return { "#5D82E6", "#5D82E6", "pad-synth", "Wide Pad", { { "attack", 0.55 }, { "release", 0.72 }, { "tone", 0.48 }, { "motion", 0.42 } }, { { "fx-pad-reverb", "reverb", "Space Reverb", false, { { "mix", 0.34 }, { "size", 0.78 } } } } };
+    case TrackKind::ElectricPiano:
+        return { "#55B8D8", "#55B8D8", "electric-piano", "Glass EP", { { "attack", 0.01 }, { "release", 0.35 }, { "tone", 0.58 }, { "bell", 0.62 } }, { { "fx-ep-reverb", "reverb", "Plate Reverb", false, { { "mix", 0.18 }, { "size", 0.52 } } } } };
+    case TrackKind::Organ:
+        return { "#8BC34A", "#8BC34A", "organ", "Drawbar Organ", { { "attack", 0.0 }, { "release", 0.18 }, { "drawbar", 0.72 }, { "rotary", 0.38 } }, {} };
+    case TrackKind::Brass:
+        return { "#D6A548", "#D6A548", "brass", "Section Brass", { { "attack", 0.08 }, { "release", 0.26 }, { "tone", 0.68 }, { "swell", 0.48 } }, {} };
+    case TrackKind::Choir:
+        return { "#8F7AE5", "#8F7AE5", "choir", "Soft Choir", { { "attack", 0.45 }, { "release", 0.82 }, { "tone", 0.44 }, { "ensemble", 0.72 } }, { { "fx-choir-reverb", "reverb", "Cathedral Reverb", false, { { "mix", 0.36 }, { "size", 0.84 } } } } };
+    case TrackKind::Mallet:
+        return { "#F1C84B", "#F1C84B", "mallet", "Bright Mallet", { { "attack", 0.0 }, { "release", 0.28 }, { "tone", 0.78 }, { "strike", 0.7 } }, {} };
+    case TrackKind::Woodwind:
+        return { "#4EB7A5", "#4EB7A5", "woodwind", "Warm Woodwind", { { "attack", 0.04 }, { "release", 0.32 }, { "tone", 0.52 }, { "breath", 0.38 } }, {} };
     case TrackKind::Strings:
         return { "#B97B45", "#B97B45", "strings", "Studio Strings", { { "attack", 0.18 }, { "release", 0.45 }, { "tone", 0.56 }, { "ensemble", 0.66 } }, {} };
     case TrackKind::GuitarSynth:
@@ -627,6 +650,34 @@ MidiClipData defaultStarterClipForTrackKind(TrackKind kind)
     case TrackKind::GuitarSynth:
         data.notes = { { 60, 96, 1, 0.0, 0.25 }, { 64, 86, 1, 0.5, 0.25 }, { 67, 92, 1, 1.0, 0.25 }, { 72, 98, 1, 1.5, 0.5 } };
         break;
+    case TrackKind::ElectricPiano:
+        data.notes = chordPattern(60);
+        for (auto& note : data.notes) {
+            note.durationBeats = std::min(note.durationBeats, 1.5);
+        }
+        break;
+    case TrackKind::Organ:
+        data.notes = chordPattern(55);
+        break;
+    case TrackKind::Brass:
+        data.notes = {
+            { 55, 96, 1, 0.0, 0.5 }, { 60, 102, 1, 0.0, 0.5 }, { 64, 98, 1, 0.0, 0.5 },
+            { 57, 92, 1, 1.5, 0.5 }, { 62, 100, 1, 1.5, 0.5 }, { 65, 96, 1, 1.5, 0.5 },
+            { 59, 96, 1, 3.0, 1.0 }, { 64, 104, 1, 3.0, 1.0 }, { 67, 100, 1, 3.0, 1.0 },
+        };
+        break;
+    case TrackKind::Choir:
+        data.notes = chordPattern(48);
+        break;
+    case TrackKind::Mallet:
+        data.notes = {
+            { 72, 92, 1, 0.0, 0.35 }, { 76, 84, 1, 0.5, 0.35 }, { 79, 88, 1, 1.0, 0.35 }, { 84, 96, 1, 1.5, 0.5 },
+            { 79, 88, 1, 2.0, 0.35 }, { 76, 84, 1, 2.5, 0.35 }, { 72, 92, 1, 3.0, 0.75 },
+        };
+        break;
+    case TrackKind::Woodwind:
+        data.notes = { { 67, 90, 1, 0.0, 0.75 }, { 69, 84, 1, 0.75, 0.5 }, { 71, 86, 1, 1.25, 0.5 }, { 72, 92, 1, 2.0, 1.0 }, { 74, 88, 1, 3.0, 0.75 } };
+        break;
     case TrackKind::Pad:
     case TrackKind::Strings:
     case TrackKind::Keys:
@@ -662,6 +713,15 @@ Track& Project::addTrack(TrackKind kind, std::string trackName)
 
     tracks.push_back(std::move(track));
     return tracks.back();
+}
+
+bool Project::removeTrack(TrackId id)
+{
+    const auto it = std::find_if(tracks.begin(), tracks.end(),
+        [id](const Track& t) { return t.id == id; });
+    if (it == tracks.end()) return false;
+    tracks.erase(it);
+    return true;
 }
 
 Clip& Project::addAudioClip(TrackId trackId, std::string clipName, std::string mediaPath, double startBeat, double lengthBeats)
@@ -726,7 +786,7 @@ double Project::bpmAt(double beat) const
             break;
         }
     }
-    return current->bpm;
+    return (std::isfinite(current->bpm) && current->bpm > 0.0) ? current->bpm : 120.0;
 }
 
 JsonValue Project::toJson() const
@@ -840,6 +900,20 @@ Project Project::fromJson(const JsonValue& json)
     return project;
 }
 
+void Project::saveFile(const std::filesystem::path& projectFile) const
+{
+    const auto parent = projectFile.parent_path();
+    if (!parent.empty()) {
+        std::filesystem::create_directories(parent);
+    }
+    writeTextFile(projectFile, toJson().stringify(2));
+}
+
+Project Project::loadFile(const std::filesystem::path& projectFile)
+{
+    return fromJson(JsonValue::parse(readTextFile(projectFile)));
+}
+
 void Project::saveBundle(const std::filesystem::path& bundleDirectory) const
 {
     std::filesystem::create_directories(bundleDirectory / "Audio");
@@ -861,8 +935,17 @@ Project makeStarterProject()
     project.tempoMarkers = { { 0.0, 120.0 } };
 
     auto& keys = project.addTrack(TrackKind::Keys, "Warm Keys");
+    keys.mixer.volumeDb = -2.0;
     auto& keysClip = project.addMidiClip(keys.id, "Intro Chords", 0.0, 8.0);
     keysClip.midi = defaultStarterClipForTrackKind(keys.kind);
+    keys.mixer.effects.push_back({
+        "fx-keys-reverb", "reverb", "Room Reverb", false, { { "mix", 0.22 } }
+    });
+
+    auto& bass = project.addTrack(TrackKind::Bass, "Deep Bass");
+    bass.mixer.volumeDb = -1.0;
+    auto& bassClip = project.addMidiClip(bass.id, "Bass Line", 0.0, 8.0);
+    bassClip.midi = defaultStarterClipForTrackKind(bass.kind);
 
     auto& drums = project.addTrack(TrackKind::DrumKit, "Open Kit");
     auto& beat = project.addMidiClip(drums.id, "Four Beat", 0.0, 8.0);
@@ -871,10 +954,7 @@ Project makeStarterProject()
     auto& vocal = project.addTrack(TrackKind::Audio, "Vocal");
     vocal.mixer.recordArmed = true;
     vocal.mixer.effects.push_back({
-        "fx-vocal-eq",
-        "eq",
-        "Clean EQ",
-        false,
+        "fx-vocal-eq", "eq", "Clean EQ", false,
         { { "lowCutHz", 85.0 }, { "presenceDb", 1.8 }, { "airDb", 1.2 } },
     });
 

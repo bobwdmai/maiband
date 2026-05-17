@@ -1,8 +1,17 @@
 #include "core/Transport.h"
 
 #include <algorithm>
+#include <cmath>
 
 namespace bandforge {
+namespace {
+
+double safeBpm(double bpm) noexcept
+{
+    return (std::isfinite(bpm) && bpm > 0.0) ? bpm : 120.0;
+}
+
+} // namespace
 
 TempoMap::TempoMap(const Project& project)
     : project_(project)
@@ -21,7 +30,7 @@ double TempoMap::beatToSeconds(double beat) const
 
     for (const auto& marker : project_.tempoMarkers) {
         if (marker.beat <= 0.0) {
-            currentBpm = marker.bpm;
+            currentBpm = safeBpm(marker.bpm);
             continue;
         }
         if (marker.beat >= beat) {
@@ -29,7 +38,7 @@ double TempoMap::beatToSeconds(double beat) const
         }
         seconds += ((marker.beat - previousBeat) * 60.0) / currentBpm;
         previousBeat = marker.beat;
-        currentBpm = marker.bpm;
+        currentBpm = safeBpm(marker.bpm);
     }
 
     seconds += ((beat - previousBeat) * 60.0) / currentBpm;
@@ -48,7 +57,7 @@ double TempoMap::secondsToBeat(double seconds) const
 
     for (const auto& marker : project_.tempoMarkers) {
         if (marker.beat <= 0.0) {
-            currentBpm = marker.bpm;
+            currentBpm = safeBpm(marker.bpm);
             continue;
         }
 
@@ -59,7 +68,7 @@ double TempoMap::secondsToBeat(double seconds) const
 
         remaining -= segmentSeconds;
         previousBeat = marker.beat;
-        currentBpm = marker.bpm;
+        currentBpm = safeBpm(marker.bpm);
     }
 
     return previousBeat + ((remaining * currentBpm) / 60.0);

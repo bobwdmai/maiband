@@ -22,6 +22,12 @@ PluginHost::PluginHost()
     registerPlugin({ "builtin-lead-synth", "Lead Synth", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-bass-synth", "Bass Synth", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-pad-synth", "Pad Synth", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-electric-piano", "Electric Piano", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-organ", "Organ", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-brass", "Brass", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-choir", "Choir", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-mallet", "Mallet", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-woodwind", "Woodwind", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-strings", "Strings", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-guitar-synth", "Guitar Synth", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-arp-synth", "Arp Synth", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
@@ -30,6 +36,7 @@ PluginHost::PluginHost()
     registerPlugin({ "builtin-drum-rack", "Drum Rack", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-beat-sequencer", "Beat Sequencer", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
     registerPlugin({ "builtin-808", "808", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
+    registerPlugin({ "builtin-sampler", "Sampler", "BandForge", "Instrument", PluginFormat::BuiltIn, {}, true });
 }
 
 void PluginHost::addSearchPath(std::filesystem::path path)
@@ -119,8 +126,10 @@ std::string toString(PluginFormat format)
         return "vst3";
     case PluginFormat::Lv2:
         return "lv2";
+    default:
+        throw std::logic_error("Unhandled PluginFormat value: " +
+                               std::to_string(static_cast<int>(format)));
     }
-    return "builtin";
 }
 
 } // namespace bandforge

@@ -32,6 +32,42 @@ InstrumentHost::InstrumentHost()
         { { "attack", 0.55 }, { "release", 0.72 }, { "tone", 0.48 }, { "motion", 0.42 } },
     });
     registerInstrument({
+        "electric-piano",
+        "Electric Piano",
+        "Keyboards",
+        { { "attack", 0.01 }, { "release", 0.35 }, { "tone", 0.58 }, { "bell", 0.62 } },
+    });
+    registerInstrument({
+        "organ",
+        "Organ",
+        "Keyboards",
+        { { "attack", 0.0 }, { "release", 0.18 }, { "drawbar", 0.72 }, { "rotary", 0.38 } },
+    });
+    registerInstrument({
+        "brass",
+        "Brass",
+        "Orchestral",
+        { { "attack", 0.08 }, { "release", 0.26 }, { "tone", 0.68 }, { "swell", 0.48 } },
+    });
+    registerInstrument({
+        "choir",
+        "Choir",
+        "Orchestral",
+        { { "attack", 0.45 }, { "release", 0.82 }, { "tone", 0.44 }, { "ensemble", 0.72 } },
+    });
+    registerInstrument({
+        "mallet",
+        "Mallet",
+        "Percussion",
+        { { "attack", 0.0 }, { "release", 0.28 }, { "tone", 0.78 }, { "strike", 0.7 } },
+    });
+    registerInstrument({
+        "woodwind",
+        "Woodwind",
+        "Orchestral",
+        { { "attack", 0.04 }, { "release", 0.32 }, { "tone", 0.52 }, { "breath", 0.38 } },
+    });
+    registerInstrument({
         "strings",
         "Strings",
         "Orchestral",

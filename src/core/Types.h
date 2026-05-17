@@ -17,6 +17,12 @@ enum class TrackKind {
     SynthLead,
     Bass,
     Pad,
+    ElectricPiano,
+    Organ,
+    Brass,
+    Choir,
+    Mallet,
+    Woodwind,
     Strings,
     GuitarSynth,
     Arp,
@@ -82,6 +88,18 @@ inline std::string toString(TrackKind kind)
         return "bass";
     case TrackKind::Pad:
         return "pad";
+    case TrackKind::ElectricPiano:
+        return "electric-piano";
+    case TrackKind::Organ:
+        return "organ";
+    case TrackKind::Brass:
+        return "brass";
+    case TrackKind::Choir:
+        return "choir";
+    case TrackKind::Mallet:
+        return "mallet";
+    case TrackKind::Woodwind:
+        return "woodwind";
     case TrackKind::Strings:
         return "strings";
     case TrackKind::GuitarSynth:
@@ -126,6 +144,24 @@ inline TrackKind trackKindFromString(const std::string& value)
     }
     if (value == "pad") {
         return TrackKind::Pad;
+    }
+    if (value == "electric-piano" || value == "epiano") {
+        return TrackKind::ElectricPiano;
+    }
+    if (value == "organ") {
+        return TrackKind::Organ;
+    }
+    if (value == "brass") {
+        return TrackKind::Brass;
+    }
+    if (value == "choir") {
+        return TrackKind::Choir;
+    }
+    if (value == "mallet") {
+        return TrackKind::Mallet;
+    }
+    if (value == "woodwind") {
+        return TrackKind::Woodwind;
     }
     if (value == "strings") {
         return TrackKind::Strings;
@@ -177,6 +213,12 @@ inline bool isMidiTrackKind(TrackKind kind) noexcept
         || kind == TrackKind::SynthLead
         || kind == TrackKind::Bass
         || kind == TrackKind::Pad
+        || kind == TrackKind::ElectricPiano
+        || kind == TrackKind::Organ
+        || kind == TrackKind::Brass
+        || kind == TrackKind::Choir
+        || kind == TrackKind::Mallet
+        || kind == TrackKind::Woodwind
         || kind == TrackKind::Strings
         || kind == TrackKind::GuitarSynth
         || kind == TrackKind::Arp
@@ -202,6 +244,18 @@ inline std::string displayName(TrackKind kind)
         return "Bass";
     case TrackKind::Pad:
         return "Pad";
+    case TrackKind::ElectricPiano:
+        return "Electric Piano";
+    case TrackKind::Organ:
+        return "Organ";
+    case TrackKind::Brass:
+        return "Brass";
+    case TrackKind::Choir:
+        return "Choir";
+    case TrackKind::Mallet:
+        return "Mallet";
+    case TrackKind::Woodwind:
+        return "Woodwind";
     case TrackKind::Strings:
         return "Strings";
     case TrackKind::GuitarSynth:

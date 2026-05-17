@@ -74,6 +74,12 @@ std::vector<bandforge::TrackKind> midiTrackKinds()
         bandforge::TrackKind::SynthLead,
         bandforge::TrackKind::Bass,
         bandforge::TrackKind::Pad,
+        bandforge::TrackKind::ElectricPiano,
+        bandforge::TrackKind::Organ,
+        bandforge::TrackKind::Brass,
+        bandforge::TrackKind::Choir,
+        bandforge::TrackKind::Mallet,
+        bandforge::TrackKind::Woodwind,
         bandforge::TrackKind::Strings,
         bandforge::TrackKind::GuitarSynth,
         bandforge::TrackKind::Arp,
@@ -129,6 +135,26 @@ void testProjectBundle()
     std::filesystem::remove_all(dir);
 }
 
+void testProjectFile()
+{
+    auto project = bandforge::makeStarterProject();
+    auto& brass = project.addTrack(bandforge::TrackKind::Brass, "Section Brass");
+    auto& clip = project.addMidiClip(brass.id, "Brass Stabs", 0.0, 4.0);
+    clip.midi = bandforge::defaultStarterClipForTrackKind(brass.kind);
+
+    const auto file = std::filesystem::temp_directory_path() / "bandforge-core-test-project.bforge";
+    std::filesystem::remove(file);
+    project.saveFile(file);
+
+    check(std::filesystem::exists(file), ".bforge project file should be written");
+    check(fileSize(file) > 0, ".bforge project file should contain JSON");
+
+    auto loaded = bandforge::Project::loadFile(file);
+    check(loaded.tracks.size() == project.tracks.size(), ".bforge load should preserve tracks");
+    check(loaded.tracks.back().kind == bandforge::TrackKind::Brass, ".bforge load should preserve new MIDI kind");
+    std::filesystem::remove(file);
+}
+
 void testTimelineEdits()
 {
     auto project = bandforge::makeStarterProject();
@@ -164,6 +190,11 @@ void testAutomationAndTempo()
     bandforge::TempoMap tempoMap(project);
     checkNear(tempoMap.beatToSeconds(4.0), 2.0, 0.0001, "tempo map should convert first segment");
     checkNear(tempoMap.secondsToBeat(3.0), 5.0, 0.0001, "tempo map should convert second segment");
+
+    project.tempoMarkers = { { 0.0, 0.0 } };
+    checkNear(project.bpmAt(0.0), 120.0, 0.0001, "invalid tempo should fall back safely");
+    bandforge::TempoMap invalidTempoMap(project);
+    checkNear(invalidTempoMap.beatToSeconds(4.0), 2.0, 0.0001, "tempo map should not divide by zero");
 }
 
 void testUndoRedo()
@@ -225,6 +256,31 @@ void testLibrarySearch()
     check(keyResults.size() == 1 && keyResults.front().id == "loop-2", "library key search should match exact key");
 }
 
+void testFactoryExpansion()
+{
+    bandforge::SoundLibrary library;
+    library.addFactoryExpansion();
+
+    check(library.loops.size() == 6000, "factory expansion should add 6000 MIDI loops");
+    check(library.presets.size() == 4000, "factory expansion should add 3000 instruments and 1000 FX presets");
+
+    const auto factoryLoops = library.searchLoops({ "factory", "", "", "" });
+    check(factoryLoops.size() == 6000, "factory loops should be searchable");
+    check(std::all_of(factoryLoops.begin(), factoryLoops.end(), [](const bandforge::LoopAsset& loop) {
+        return loop.kind == bandforge::LoopKind::Midi && !loop.midi.notes.empty() && bandforge::isMidiTrackKind(loop.targetTrackKind);
+    }), "factory loops should be playable MIDI loops");
+
+    const auto fxPresets = library.searchPresets({ "fx-chain", "", "", "" });
+    check(fxPresets.size() == 1000, "factory FX presets should be searchable");
+    check(std::all_of(fxPresets.begin(), fxPresets.end(), [](const bandforge::Preset& preset) {
+        return preset.instrumentType == "audio-effect-chain";
+    }), "factory FX presets should be effect-chain presets");
+
+    library.addFactoryExpansion();
+    check(library.loops.size() == 6000 && library.presets.size() == 4000,
+        "factory expansion should be idempotent");
+}
+
 void testLoopPackManifest()
 {
     const auto manifestPath = libraryPath("manifest.json");
@@ -277,6 +333,7 @@ void testHosts()
     const auto plugin = plugins.findPlugin("builtin-poly-synth");
     check(plugin.has_value() && plugin->instrument, "plugin host should expose built-in instruments");
     check(plugins.findPlugin("builtin-drum-rack").has_value(), "plugin host should expose drum rack");
+    check(plugins.findPlugin("builtin-sampler").has_value(), "plugin host should expose sampler");
 }
 
 void testAudioAndExport()
@@ -284,6 +341,7 @@ void testAudioAndExport()
     auto project = bandforge::makeStarterProject();
     bandforge::AudioEngine engine;
     engine.prepare({ 48000.0, 512, 2 });
+    engine.requestStretch("", 0.0);
     std::vector<float> samples(48000, 0.0f);
     engine.renderPreview(project, 0.0, samples);
 
@@ -340,10 +398,12 @@ int main()
         testProjectSerialization();
         testTrackKinds();
         testProjectBundle();
+        testProjectFile();
         testTimelineEdits();
         testAutomationAndTempo();
         testUndoRedo();
         testLibrarySearch();
+        testFactoryExpansion();
         testLoopPackManifest();
         testHosts();
         testAudioAndExport();

@@ -8,6 +8,7 @@
 
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
 #include <atomic>
@@ -62,6 +63,13 @@ private:
     void openPluginBrowser();
     void loadPluginOnTrack(bandforge::TrackId trackId, const juce::PluginDescription& desc);
     void openDeviceSettings();
+    void recordMusicalTypingMessage(const juce::MidiMessage& msg);
+    void releaseActiveMusicalTypingKeys();
+    [[nodiscard]] bandforge::TrackId chooseMidiRecordTarget() const;
+    [[nodiscard]] bandforge::TrackId chooseMusicalTypingRecordTarget() const;
+    bandforge::TrackId ensureMidiRecordTarget(bool preferSelectedTrack);
+    void armMidiRecordTarget(bandforge::TrackId trackId, bool remember);
+    void closeActiveMidiNotesForRecording();
     [[nodiscard]] bandforge::TrackKind selectedTrackKind() const;
 
     // juce::MidiInputCallback
@@ -97,6 +105,7 @@ private:
     juce::TextButton settingsButton_ { "Devices" };
     juce::Label positionLabel_;
     juce::Label tempoLabel_;
+    juce::Label recordingStatusLabel_;
 
     std::unique_ptr<TrackListComponent> trackList_;
     std::unique_ptr<TimelineComponent> timeline_;
@@ -117,7 +126,9 @@ private:
     int autoSaveCounterTicks_ = 0;
 
     int keyboardOctave_ = 4;
-    std::map<int, int> activeNoteKeys_; // keyCode → MIDI pitch
+    int keyboardVelocity_ = 100;
+    mutable std::mutex activeNoteKeysMutex_;
+    std::map<int, int> activeNoteKeys_; // keyCode/source id -> MIDI pitch
 
     // ── Audio recording ───────────────────────────────────────────────────────
     class AudioRecorder;
@@ -132,10 +143,13 @@ private:
     struct TimedMidiMsg { juce::MidiMessage msg; double beatPosition = 0.0; };
     std::vector<TimedMidiMsg> recordedMidi_;
     bool midiRecording_ = false;
+    bandforge::TrackId midiRecordTargetTrack_ = 0;
+    bool musicalTypingRecorded_ = false;
 
     // ── Plugin hosting ────────────────────────────────────────────────────────
     juce::AudioPluginFormatManager formatManager_;
     juce::KnownPluginList knownPlugins_;
+    juce::ThreadPool pluginScanPool_ { 1 };
 
     struct TrackPlugin {
         std::unique_ptr<juce::AudioPluginInstance> instance;
@@ -152,7 +166,7 @@ private:
 
     juce::TextButton pluginsButton_ { "Plugins" };
     std::unique_ptr<juce::FileChooser> pluginChooser_;
-    std::map<bandforge::TrackId, juce::DocumentWindow*> pluginWindows_;
+    std::map<bandforge::TrackId, std::unique_ptr<juce::DocumentWindow>> pluginWindows_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

@@ -4,6 +4,7 @@
 #include "core/Model.h"
 
 #include <filesystem>
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -58,6 +59,9 @@ public:
     static SoundLibrary fromJson(const JsonValue& json);
     static SoundLibrary loadManifest(const std::filesystem::path& manifestPath);
     void saveManifest(const std::filesystem::path& manifestPath) const;
+    void addFactoryExpansion(std::size_t midiLoopCount = 6000,
+                             std::size_t instrumentPresetCount = 3000,
+                             std::size_t effectPresetCount = 1000);
 };
 
 [[nodiscard]] std::string toString(LoopKind kind);
