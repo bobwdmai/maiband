@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MaiBand — A Logic-style DAW in C++/JUCE</title>
+<meta name="description" content="MaiBand is an open-source desktop DAW with a Logic-style 8-band Channel EQ, real-time spectrum analyzer, voice effects, built-in instruments and VST3/LV2 plugin hosting." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:        #0d1218;
+    --panel:     #141a23;
+    --panel-2:   #1a2230;
+    --line:      #2a3548;
+    --text:      #f4f7fb;
+    --muted:     #7a8fa6;
+    --dim:       #5a6a7e;
+    --accent:    #5090ff;
+    --c-hpf:     #70dde0;
+    --c-lshelf:  #f0c050;
+    --c-peak1:   #f04060;
+    --c-peak2:   #60c050;
+    --c-peak3:   #5090ff;
+    --c-peak4:   #ff8030;
+    --c-hshelf:  #b060e0;
+    --c-lpf:     #70dde0;
+    --radius:    10px;
+  }
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; transition: color .15s ease; }
+  a:hover { color: #80b0ff; }
+  code, pre { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* Background gradient */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(80,144,255,0.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(176,96,224,0.08), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0;
+    z-index: 10;
+    background: rgba(13,18,24,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 18px; letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--c-peak3), var(--c-hshelf));
+    display: grid; place-items: center;
+    box-shadow: 0 6px 20px rgba(80,144,255,0.35);
+  }
+  .brand-mark svg { width: 16px; height: 16px; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--muted); font-weight: 500; font-size: 14px; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--text);
+    color: var(--bg);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600; font-size: 13px;
+  }
+  .nav-cta:hover { background: #fff; color: var(--bg); }
+
+  /* Hero */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px 24px 60px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    margin: 0 0 16px;
+    letter-spacing: -0.035em;
+    line-height: 1.0;
+    background: linear-gradient(180deg, #ffffff 0%, #a4b5cf 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-tag {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0 auto 32px;
+  }
+  .hero-tag .highlight {
+    color: var(--text); font-weight: 500;
+  }
+  .hero-buttons {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .btn {
+    padding: 12px 22px;
+    border-radius: 9px;
+    font-weight: 600; font-size: 14.5px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .12s ease, background .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-primary:hover { background: #fff; color: var(--bg); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: #4a5a70; }
+
+  /* EQ Hero Visual */
+  .eq-card {
+    max-width: 920px;
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(80,144,255,0.05);
+  }
+  .eq-card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 4px 12px;
+  }
+  .eq-card-header .dots { display: flex; gap: 6px; margin-right: 8px; }
+  .eq-card-header .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--line);
+  }
+  .eq-card-header .dot.r { background: #ff6c5e; }
+  .eq-card-header .dot.y { background: #ffbd44; }
+  .eq-card-header .dot.g { background: #00ca56; }
+  .eq-card-title {
+    color: var(--muted);
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .eq-toggle-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .toggle-cell {
+    height: 38px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: grid; place-items: center;
+    position: relative;
+    transition: transform .12s ease;
+  }
+  .toggle-cell.active {
+    background: var(--cell-c);
+    border-color: transparent;
+  }
+  .toggle-cell svg { width: 28px; height: 18px; }
+  .toggle-cell .num {
+    position: absolute; bottom: 2px; left: 0; right: 0;
+    text-align: center;
+    font-size: 9px; font-weight: 700;
+    color: var(--cell-c);
+  }
+  .toggle-cell.active .num { color: rgba(13,18,24,0.85); }
+  .toggle-cell svg path { stroke: var(--cell-c); stroke-width: 1.8; fill: none; }
+  .toggle-cell.active svg path { stroke: rgba(13,18,24,0.85); }
+
+  .eq-curve {
+    height: 230px;
+    background: var(--panel-2);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .eq-curve svg { width: 100%; height: 100%; display: block; }
+  .grid-line { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
+  .grid-line.zero { stroke: #303d52; opacity: 0.9; }
+  .axis-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    fill: var(--dim);
+    font-weight: 500;
+  }
+  .spectrum-fill { fill: rgba(80,144,255,0.18); }
+  .spectrum-line { stroke: rgba(128,176,255,0.45); stroke-width: 1; fill: none; }
+  .band-line { fill: none; stroke-width: 1.2; opacity: 0.6; }
+  .combined-line {
+    fill: none;
+    stroke: #e0eaff;
+    stroke-width: 2.2;
+  }
+  .handle { stroke-width: 1.8; }
+  .handle-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    fill: #fff;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  /* Sections */
+  section { padding: 90px 0; }
+  .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700; letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    line-height: 1.1;
+  }
+  .section-tag {
+    color: var(--muted);
+    font-size: 17px;
+    max-width: 620px;
+    margin-bottom: 56px;
+  }
+
+  /* Feature cards */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .feature {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 26px;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .feature:hover {
+    transform: translateY(-3px);
+    border-color: #3a4860;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    margin-bottom: 18px;
+    background: rgba(80,144,255,0.12);
+  }
+  .feature-icon svg { width: 22px; height: 22px; }
+  .feature h3 {
+    font-size: 17px; font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .feature p {
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0;
+  }
+
+  /* Build block */
+  .build-section { background: linear-gradient(180deg, transparent, rgba(80,144,255,0.04) 50%, transparent); }
+  .codeblock {
+    background: #0a0e14;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #d0d8e8;
+  }
+  .codeblock .c-cmt { color: var(--dim); }
+  .codeblock .c-cmd { color: #80b0ff; }
+  .codeblock .c-str { color: var(--c-lshelf); }
+  .codeblock .c-flag { color: var(--c-lpf); }
+
+  /* Tech / stack list */
+  .stack {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 28px;
+  }
+  .pill {
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 13px; font-weight: 500;
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* Two-column */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  @media (max-width: 760px) {
+    .split { grid-template-columns: 1fr; gap: 32px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+  .feature-callout-img {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    aspect-ratio: 4/3;
+    display: grid; place-items: center;
+  }
+  .feature-callout-img svg { width: 100%; height: 100%; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 36px 24px;
+    text-align: center;
+    color: var(--dim);
+    font-size: 13.5px;
+  }
+  footer a { color: var(--muted); margin: 0 10px; }
+  footer a:hover { color: var(--text); }
+
+  /* Animations */
+  @keyframes float {
+    from, to { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .eq-card { animation: float 8s ease-in-out infinite; }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.18; }
+    50% { opacity: 0.32; }
+  }
+  .spectrum-fill { animation: pulse-glow 3.5s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round">
+          <path d="M3 14 Q 6 6, 9 14 T 15 14 T 21 14"/>
+        </svg>
+      </span>
+      MaiBand
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#build">Build</a>
+      <a href="https://github.com/bobwdmai/maiband" class="nav-cta">GitHub →</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>The DAW you build,<br/>not buy.</h1>
+  <p class="hero-tag">
+    MaiBand is an <span class="highlight">open-source desktop DAW</span> with a Logic-style 8-band Channel EQ, real-time spectrum analyzer, voice effects, built-in instruments and VST3/LV2 plugin hosting — written in modern C++ on JUCE.
+  </p>
+  <div class="hero-buttons">
+    <a href="https://github.com/bobwdmai/maiband" class="btn btn-primary">
+      View on GitHub
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#build" class="btn btn-secondary">Build it locally</a>
+  </div>
+
+  <!-- EQ Hero Visual -->
+  <div class="eq-card" role="img" aria-label="The MaiBand 8-band Channel EQ with spectrum analyzer">
+    <div class="eq-card-header">
+      <div class="dots">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      </div>
+      <div class="eq-card-title">Channel EQ &nbsp;·&nbsp; 8 bands &nbsp;·&nbsp; with live spectrum</div>
+    </div>
+
+    <!-- 8 band toggle cells -->
+    <div class="eq-toggle-row">
+      <div class="toggle-cell active" style="--cell-c: var(--c-hpf)">
+        <svg viewBox="0 0 28 16"><path d="M2 13 L8 13 L14 4 L26 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">1</span>
+      </div>
+      <div class="toggle-cell" style="--cell-c: var(--c-lshelf)">
+        <svg viewBox="0 0 28 16"><path d="M2 11 L9 11 L16 5 L26 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">2</span>
+      </div>
+      <div class="toggle-cell active" style="--cell-c: var(--c-peak1)">
+        <svg viewBox="0 0 28 16"><path d="M2 13 Q 8 13, 14 2 Q 20 13, 26 13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">3</span>
+      </div>
+      <div class="toggle-cell active" style="--cell-c: var(--c-peak2)">
+        <svg viewBox="0 0 28 16"><path d="M2 13 Q 8 13, 14 2 Q 20 13, 26 13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">4</span>
+      </div>
+      <div class="toggle-cell active" style="--cell-c: var(--c-peak3)">
+        <svg viewBox="0 0 28 16"><path d="M2 13 Q 8 13, 14 2 Q 20 13, 26 13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">5</span>
+      </div>
+      <div class="toggle-cell active" style="--cell-c: var(--c-peak4)">
+        <svg viewBox="0 0 28 16"><path d="M2 13 Q 8 13, 14 2 Q 20 13, 26 13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">6</span>
+      </div>
+      <div class="toggle-cell" style="--cell-c: var(--c-hshelf)">
+        <svg viewBox="0 0 28 16"><path d="M2 5 L12 5 L19 11 L26 11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">7</span>
+      </div>
+      <div class="toggle-cell" style="--cell-c: var(--c-lpf)">
+        <svg viewBox="0 0 28 16"><path d="M2 4 L14 4 L20 13 L26 13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="num">8</span>
+      </div>
+    </div>
+
+    <div class="eq-curve">
+      <svg viewBox="0 0 880 230" preserveAspectRatio="none">
+        <!-- horizontal grid -->
+        <line x1="0" y1="29"  x2="880" y2="29"  class="grid-line"/>
+        <line x1="0" y1="86"  x2="880" y2="86"  class="grid-line"/>
+        <line x1="0" y1="115" x2="880" y2="115" class="grid-line zero"/>
+        <line x1="0" y1="144" x2="880" y2="144" class="grid-line"/>
+        <line x1="0" y1="201" x2="880" y2="201" class="grid-line"/>
+        <!-- vertical grid: log scale 20-20k -->
+        <line x1="115" y1="0" x2="115" y2="230" class="grid-line"/>
+        <line x1="195" y1="0" x2="195" y2="230" class="grid-line"/>
+        <line x1="265" y1="0" x2="265" y2="230" class="grid-line"/>
+        <line x1="380" y1="0" x2="380" y2="230" class="grid-line"/>
+        <line x1="450" y1="0" x2="450" y2="230" class="grid-line"/>
+        <line x1="540" y1="0" x2="540" y2="230" class="grid-line"/>
+        <line x1="655" y1="0" x2="655" y2="230" class="grid-line"/>
+        <line x1="725" y1="0" x2="725" y2="230" class="grid-line"/>
+        <!-- axis labels -->
+        <text x="115" y="220" class="axis-label" text-anchor="middle">100</text>
+        <text x="265" y="220" class="axis-label" text-anchor="middle">500</text>
+        <text x="380" y="220" class="axis-label" text-anchor="middle">1k</text>
+        <text x="540" y="220" class="axis-label" text-anchor="middle">5k</text>
+        <text x="725" y="220" class="axis-label" text-anchor="middle">20k</text>
+
+        <!-- Faux spectrum fill -->
+        <path class="spectrum-fill" d="M0,230 L0,205 L40,195 L80,180 L120,170 L160,160 L200,140 L240,128 L280,120 L320,118 L360,128 L400,140 L440,150 L480,158 L520,162 L560,170 L600,178 L640,188 L680,196 L720,202 L760,208 L800,212 L840,218 L880,220 L880,230 Z"/>
+        <path class="spectrum-line"  d="M0,205 L40,195 L80,180 L120,170 L160,160 L200,140 L240,128 L280,120 L320,118 L360,128 L400,140 L440,150 L480,158 L520,162 L560,170 L600,178 L640,188 L680,196 L720,202 L760,208 L800,212 L840,218 L880,220"/>
+
+        <!-- Per-band response curves (visual approximations) -->
+        <path class="band-line" stroke="var(--c-hpf)" d="M0,200 Q 30,200 60,180 Q 80,120 110,115"/>
+        <path class="band-line" stroke="var(--c-peak1)" d="M150,115 Q 220,115 240,80 Q 260,115 330,115"/>
+        <path class="band-line" stroke="var(--c-peak2)" d="M340,115 Q 400,115 420,140 Q 440,115 500,115"/>
+        <path class="band-line" stroke="var(--c-peak3)" d="M460,115 Q 520,115 545,72 Q 570,115 630,115"/>
+        <path class="band-line" stroke="var(--c-peak4)" d="M600,115 Q 660,115 680,135 Q 700,115 760,115"/>
+
+        <!-- Combined frequency response (clean white curve) -->
+        <path class="combined-line"
+              d="M0,170 Q 50,170 90,160 Q 130,140 170,120 Q 200,100 240,80 Q 280,100 320,115 Q 350,135 400,140 Q 440,135 480,115 Q 520,90 560,80 Q 600,100 640,120 Q 680,140 720,135 Q 760,125 800,128 Q 840,130 880,135"/>
+
+        <!-- 6 colored handle dots positioned along the curve -->
+        <g class="handle">
+          <circle cx="115" cy="115" r="8" fill="rgba(13,18,24,0.7)" stroke="var(--c-hpf)"/>
+          <text x="115" y="118" class="handle-num">1</text>
+        </g>
+        <g class="handle">
+          <circle cx="240" cy="80"  r="8" fill="rgba(13,18,24,0.7)" stroke="var(--c-peak1)"/>
+          <text x="240" y="83" class="handle-num">3</text>
+        </g>
+        <g class="handle">
+          <circle cx="420" cy="140" r="8" fill="rgba(13,18,24,0.7)" stroke="var(--c-peak2)"/>
+          <text x="420" y="143" class="handle-num">4</text>
+        </g>
+        <g class="handle">
+          <circle cx="545" cy="75"  r="9" fill="rgba(13,18,24,0.85)" stroke="var(--c-peak3)" stroke-width="2.4"/>
+          <text x="545" y="78" class="handle-num">5</text>
+        </g>
+        <g class="handle">
+          <circle cx="680" cy="135" r="8" fill="rgba(13,18,24,0.7)" stroke="var(--c-peak4)"/>
+          <text x="680" y="138" class="handle-num">6</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="section-inner">
+    <div class="eyebrow">Features</div>
+    <h2>Everything a serious DAW needs.</h2>
+    <p class="section-tag">Studio-grade DSP, a Logic-style channel strip and proper plugin hosting — all in a single binary that compiles in under a minute.</p>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(80,144,255,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5090ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 13 Q 7 13, 9 4 Q 11 13, 15 13 Q 19 13, 22 8"/>
+            <circle cx="9" cy="4" r="2" fill="#5090ff"/>
+          </svg>
+        </div>
+        <h3>8-band Channel EQ</h3>
+        <p>HPF, low shelf, four peaks, high shelf, LPF — the Logic-style layout. Drag handles to set freq and gain, scroll to adjust Q, double-click to reset.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(176,96,224,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#b060e0" stroke-width="2" stroke-linecap="round">
+            <path d="M3 12 L6 12 L8 6 L12 18 L16 8 L18 14 L21 12"/>
+          </svg>
+        </div>
+        <h3>Real-time Spectrum</h3>
+        <p>A 2048-point FFT analyzer overlays the EQ curve at 30 Hz so you can see exactly where the energy in your mix is sitting.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(240,192,80,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f0c050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v3M12 18v3M5 12H2M22 12h-3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
+        </div>
+        <h3>Voice Effects</h3>
+        <p>Echo, reverb, soft-clip distortion, telephone and megaphone — applied per-track with one click. Voice presets bundle them into instant looks.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(96,192,80,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#60c050" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3"  y="6"  width="3"  height="12" rx="0.5"/>
+            <rect x="10" y="3"  width="3"  height="18" rx="0.5"/>
+            <rect x="17" y="9"  width="3"  height="6"  rx="0.5"/>
+          </svg>
+        </div>
+        <h3>Built-in Instruments</h3>
+        <p>Poly / Lead / Bass / Pad / Strings synths, Drum Machine, 808, Pluck, Arp and a Sampler — all native, all latency-free.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(255,128,48,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff8030" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 10h16M4 14h12M4 18h8"/>
+          </svg>
+        </div>
+        <h3>VST3 &amp; LV2 Plugins</h3>
+        <p>Drop any VST3 or LV2 plugin onto a track. Latency is compensated against the dry mix using per-channel ring buffers.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(240,64,96,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f04060" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" fill="#f04060"/>
+            <circle cx="12" cy="12" r="9"/>
+          </svg>
+        </div>
+        <h3>Multi-track Recording</h3>
+        <p>Arm any MIDI or audio track and hit record. Musical Typing turns your keyboard into a MIDI controller when no hardware is plugged in.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(112,221,224,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#70dde0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12 Q 8 6, 12 12 T 20 12"/>
+            <path d="M3 18 L9 18 M15 18 L21 18"/>
+          </svg>
+        </div>
+        <h3>Tempo-aware Audio</h3>
+        <p>Audio clips can stretch to the project tempo via OLA running on a background thread — the audio thread never blocks waiting for it.</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon" style="background: rgba(80,144,255,0.14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#5090ff" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12 L9 16 L19 6"/>
+          </svg>
+        </div>
+        <h3>Auto-save &amp; Undo</h3>
+        <p>Every project mutation is journaled into the undo stack. Sessions auto-save to disk every few seconds — you'll never lose work to a crash.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="build" class="build-section">
+  <div class="section-inner">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Get started</div>
+        <h2>Build it in 60 seconds.</h2>
+        <p class="section-tag">MaiBand is a single CMake project — no Conan, no vendored Xcode workspace, no surprise dependencies. JUCE is fetched automatically.</p>
+        <div class="stack">
+          <span class="pill">C++20</span>
+          <span class="pill">JUCE 8</span>
+          <span class="pill">CMake</span>
+          <span class="pill">Linux · macOS · Windows</span>
+          <span class="pill">VST3 · LV2</span>
+        </div>
+      </div>
+      <div>
+        <pre class="codeblock"><span class="c-cmt"># Clone the repo</span>
+<span class="c-cmd">git clone</span> https://github.com/bobwdmai/maiband.git
+<span class="c-cmd">cd</span> maiband
+
+<span class="c-cmt"># Configure & build</span>
+<span class="c-cmd">cmake</span> <span class="c-flag">-S</span> . <span class="c-flag">-B</span> build
+<span class="c-cmd">cmake</span> <span class="c-flag">--build</span> build <span class="c-flag">--parallel</span>
+
+<span class="c-cmt"># Run it</span>
+./build/BandForge_artefacts/Debug/BandForge</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-inner">
+    <div class="split">
+      <div class="feature-callout-img">
+        <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stylized track list mock -->
+          <rect x="0" y="0" width="320" height="240" rx="12" fill="#0a0e14"/>
+          <text x="16" y="26" fill="#7a8fa6" font-family="Inter" font-size="11" font-weight="600">TRACKS</text>
+          <g font-family="Inter" font-size="11" font-weight="600">
+            <!-- Track row 1 -->
+            <rect x="12" y="40" width="296" height="40" rx="6" fill="#5090ff" opacity="0.16"/>
+            <rect x="20" y="50" width="20" height="20" rx="4" fill="#5090ff"/>
+            <text x="48" y="65" fill="#f4f7fb">Lead Synth</text>
+            <text x="48" y="76" fill="#7a8fa6" font-size="9">Keys · armed</text>
+            <circle cx="280" cy="60" r="4" fill="#f04060"/>
+            <!-- Track row 2 -->
+            <rect x="12" y="86" width="296" height="40" rx="6" fill="#60c050" opacity="0.10"/>
+            <rect x="20" y="96" width="20" height="20" rx="4" fill="#60c050"/>
+            <text x="48" y="111" fill="#f4f7fb">Deep Bass</text>
+            <text x="48" y="122" fill="#7a8fa6" font-size="9">Bass synth</text>
+            <!-- Track row 3 -->
+            <rect x="12" y="132" width="296" height="40" rx="6" fill="#ff8030" opacity="0.10"/>
+            <rect x="20" y="142" width="20" height="20" rx="4" fill="#ff8030"/>
+            <text x="48" y="157" fill="#f4f7fb">Drums</text>
+            <text x="48" y="168" fill="#7a8fa6" font-size="9">Drum Machine</text>
+            <!-- Track row 4 -->
+            <rect x="12" y="178" width="296" height="40" rx="6" fill="#b060e0" opacity="0.10"/>
+            <rect x="20" y="188" width="20" height="20" rx="4" fill="#b060e0"/>
+            <text x="48" y="203" fill="#f4f7fb">Vocals</text>
+            <text x="48" y="214" fill="#7a8fa6" font-size="9">Telephone preset</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="eyebrow">Designed like Logic, scaled to the essentials</div>
+        <h2>Familiar where it counts.</h2>
+        <p class="section-tag">Right-click any track to delete it, add an effect or apply a voice preset. The same gestures that work in Logic and GarageBand work here — drag a handle, scroll for Q, double-click to reset.</p>
+        <div class="stack">
+          <span class="pill">Right-click → Delete Track</span>
+          <span class="pill">Right-click → Voice Preset</span>
+          <span class="pill">⌘Z / ⌘⇧Z</span>
+          <span class="pill">Spacebar to play</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    Open-source. MIT-licensed.&nbsp;
+    <a href="https://github.com/bobwdmai/maiband">GitHub</a>
+    <a href="https://github.com/bobwdmai/maiband/issues">Report an issue</a>
+  </div>
+</footer>
+
+</body>
+</html>
